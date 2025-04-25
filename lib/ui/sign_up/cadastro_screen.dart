@@ -33,8 +33,6 @@ class _CadastroScreenState extends State<CadastroScreen> {
 // função para salvar alterações em uma confeitaria já existente
   void salvaralteracoes()async{
   await _formKey.currentState?.salvarAlteracoes();
-    Navigator.pop(context, widget.confeitaria);
-    
   }
   @override
   Widget build(BuildContext context) {

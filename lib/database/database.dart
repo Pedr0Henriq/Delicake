@@ -97,6 +97,12 @@ class AppDatabase extends _$AppDatabase {
   return (update(confeitarias)..where((tbl) => tbl.id.equals(id))).write(entry);
 }
 
+Future<Confeitaria?> getConfeitariaById(int id) async {
+  final query = await (select(confeitarias)..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+  return query;
+}
+
+
   Future<List<Produto>> getProdutos(int confeitariaId){
     return (select(produtos)..where((tbl)=>tbl.confeitariaId.equals(confeitariaId))).get();
   }

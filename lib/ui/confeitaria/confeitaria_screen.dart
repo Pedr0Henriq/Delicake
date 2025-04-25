@@ -83,13 +83,18 @@ void deletarConfeitaria(){
 
 //função que vai editar a confeitaria
 void editarConfeitaria() async{
-Confeitaria novaConfeitaria =  await Navigator.push(context, MaterialPageRoute(builder: (context){
+final result =  await Navigator.push(context, MaterialPageRoute(builder: (context){
     return CadastroScreen(econfeitaria: true,confeitaria: widget.confeitaria);
   }));
-
-  setState(() {
+if (result == true) {
+  final novaConfeitaria = await db.getConfeitariaById(widget.confeitaria.id);
+  if (novaConfeitaria!=null) {
+    setState(() {
     widget.confeitaria = novaConfeitaria;
   });
+  }
+}
+  
 }
 
   @override

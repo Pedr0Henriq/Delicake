@@ -224,14 +224,13 @@ Future<void> salvarAlteracoes() async {
     await updateConfeitariaPorCampos(widget.confeitaria!.id, camposAtualizados);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Confeitaria atualizada com sucesso!')),
-    );
-    Navigator.pop(context, widget.confeitaria); // Volta para a tela anterior com flag de sucesso, se quiser
+    );// Volta para a tela anterior com flag de sucesso, se quiser
   } else {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Nenhuma alteração detectada.')),
     );
   }
-  Navigator.pop(context,widget.confeitaria);
+  Navigator.pop(context,true);
 }
 
 /*
