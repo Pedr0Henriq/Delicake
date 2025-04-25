@@ -22,7 +22,7 @@ class _ConfeitariaScreenState extends State<ConfeitariaScreen> with RouteAware{
 @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute); //assina a rota para monitoramento
+    routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute); //assina a rota para mopercebi que no mnitoramento
   }
 
   @override

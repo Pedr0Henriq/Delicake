@@ -37,16 +37,15 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
         point: LatLng(c.latitude, c.longitude),
         child: GestureDetector(
           onTap: () async{
-           final result = await Navigator.push(context, MaterialPageRoute(builder: (context){
+          await Navigator.push(context, MaterialPageRoute(builder: (context){
               return ConfeitariaScreen(confeitaria: c,);
             }));
-            if(result == true){
               setState(() {
                 _loading = true;
               });
                  _loadConfeitarias();
 
-            }
+            
           },
           child: Image.asset('assets/images/localizacao/localizacao_confeitaria.png',width: 40,)));
     }).toList();
