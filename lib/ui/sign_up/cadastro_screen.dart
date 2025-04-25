@@ -4,9 +4,10 @@ import 'package:app_desafio/ui/sign_up/cadastro_produto.dart';
 import 'package:app_desafio/ui/sign_up/formulario_cadastro_confeitaria.dart';
 import 'package:flutter/material.dart';
 
+//Essa tela vai servir para cadastro de confeitaria ou produto
 class CadastroScreen extends StatefulWidget {
-  final bool econfeitaria;
-  final Confeitaria? confeitaria;
+  final bool econfeitaria; //true é confeitaria e false é produto
+  final Confeitaria? confeitaria; //objeto que servirá para edição, por isso pode ser nulo
   final int? confeitariaId;
   const CadastroScreen({super.key, required this.econfeitaria,this.confeitariaId,this.confeitaria});
 
@@ -15,9 +16,12 @@ class CadastroScreen extends StatefulWidget {
 }
 
 class _CadastroScreenState extends State<CadastroScreen> {
+
+  // Chaves globais para acessar os estados dos formulários (e suas funções)
   final GlobalKey<FormularioCadastroConfeitariaState> _formKey = GlobalKey();
   final GlobalKey<FormularioCadastroProdutoState> _formKeyProduto = GlobalKey();
 
+  // Função para enviar os dados do formulário (confeitaria ou produto). baseia-se em econfeitaria para chamar a função da tela correta
   void enviarDados(bool econfeitaria) async{
     final sucesso;
     econfeitaria==true? sucesso= await _formKey.currentState?.enviarDados():sucesso= await _formKeyProduto.currentState?.enviarDados();
@@ -26,6 +30,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
     }
   }
 
+// função para salvar alterações em uma confeitaria já existente
   void salvaralteracoes()async{
   await _formKey.currentState?.salvarAlteracoes();
     Navigator.pop(context, widget.confeitaria);
@@ -56,7 +61,8 @@ class _CadastroScreenState extends State<CadastroScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         spacing: 32.0,
         children: [
-          SizedBox(height: MediaQuery.of(context).size.height * 0.6,child: widget.econfeitaria ==true?FormularioCadastroConfeitaria(key: _formKey,confeitaria:widget.confeitaria):FormularioCadastroProduto(confeitariaId: widget.confeitariaId, key: _formKeyProduto,)),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.6,child: widget.econfeitaria ==true?FormularioCadastroConfeitaria(key: _formKey,confeitaria:widget.confeitaria):FormularioCadastroProduto(confeitariaId: widget.confeitariaId, key: _formKeyProduto,)),       
+          // o botão cadastrar ou salvar que vai definir qual função chamar: salvarAlterações ou enviarDados. se baseando em confeitaria!=null?
           SizedBox(
             height: 50,
             width: 180,
