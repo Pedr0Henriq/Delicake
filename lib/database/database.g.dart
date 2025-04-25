@@ -563,11 +563,11 @@ class $ProdutosTable extends Produtos with TableInfo<$ProdutosTable, Produto> {
   late final GeneratedColumn<double> valor = GeneratedColumn<double>(
       'valor', aliasedName, false,
       type: DriftSqlType.double, requiredDuringInsert: true);
-  static const VerificationMeta _imagemMeta = const VerificationMeta('imagem');
   @override
-  late final GeneratedColumn<String> imagem = GeneratedColumn<String>(
-      'imagem', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+  late final GeneratedColumnWithTypeConverter<List<String>?, String> imagens =
+      GeneratedColumn<String>('imagens', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<List<String>?>($ProdutosTable.$converterimagensn);
   static const VerificationMeta _confeitariaIdMeta =
       const VerificationMeta('confeitariaId');
   @override
@@ -578,7 +578,7 @@ class $ProdutosTable extends Produtos with TableInfo<$ProdutosTable, Produto> {
       $customConstraints: 'REFERENCES confeitarias(id) ON DELETE CASCADE');
   @override
   List<GeneratedColumn> get $columns =>
-      [id, nome, descricao, valor, imagem, confeitariaId];
+      [id, nome, descricao, valor, imagens, confeitariaId];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -610,10 +610,6 @@ class $ProdutosTable extends Produtos with TableInfo<$ProdutosTable, Produto> {
     } else if (isInserting) {
       context.missing(_valorMeta);
     }
-    if (data.containsKey('imagem')) {
-      context.handle(_imagemMeta,
-          imagem.isAcceptableOrUnknown(data['imagem']!, _imagemMeta));
-    }
     if (data.containsKey('confeitaria_id')) {
       context.handle(
           _confeitariaIdMeta,
@@ -639,8 +635,9 @@ class $ProdutosTable extends Produtos with TableInfo<$ProdutosTable, Produto> {
           .read(DriftSqlType.string, data['${effectivePrefix}descricao'])!,
       valor: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}valor'])!,
-      imagem: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}imagem']),
+      imagens: $ProdutosTable.$converterimagensn.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}imagens'])),
       confeitariaId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}confeitaria_id'])!,
     );
@@ -650,6 +647,11 @@ class $ProdutosTable extends Produtos with TableInfo<$ProdutosTable, Produto> {
   $ProdutosTable createAlias(String alias) {
     return $ProdutosTable(attachedDatabase, alias);
   }
+
+  static TypeConverter<List<String>, String> $converterimagens =
+      const JsonListConverter();
+  static TypeConverter<List<String>?, String?> $converterimagensn =
+      NullAwareTypeConverter.wrap($converterimagens);
 }
 
 class Produto extends DataClass implements Insertable<Produto> {
@@ -657,14 +659,14 @@ class Produto extends DataClass implements Insertable<Produto> {
   final String nome;
   final String descricao;
   final double valor;
-  final String? imagem;
+  final List<String>? imagens;
   final int confeitariaId;
   const Produto(
       {required this.id,
       required this.nome,
       required this.descricao,
       required this.valor,
-      this.imagem,
+      this.imagens,
       required this.confeitariaId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -673,8 +675,9 @@ class Produto extends DataClass implements Insertable<Produto> {
     map['nome'] = Variable<String>(nome);
     map['descricao'] = Variable<String>(descricao);
     map['valor'] = Variable<double>(valor);
-    if (!nullToAbsent || imagem != null) {
-      map['imagem'] = Variable<String>(imagem);
+    if (!nullToAbsent || imagens != null) {
+      map['imagens'] =
+          Variable<String>($ProdutosTable.$converterimagensn.toSql(imagens));
     }
     map['confeitaria_id'] = Variable<int>(confeitariaId);
     return map;
@@ -686,8 +689,9 @@ class Produto extends DataClass implements Insertable<Produto> {
       nome: Value(nome),
       descricao: Value(descricao),
       valor: Value(valor),
-      imagem:
-          imagem == null && nullToAbsent ? const Value.absent() : Value(imagem),
+      imagens: imagens == null && nullToAbsent
+          ? const Value.absent()
+          : Value(imagens),
       confeitariaId: Value(confeitariaId),
     );
   }
@@ -700,7 +704,7 @@ class Produto extends DataClass implements Insertable<Produto> {
       nome: serializer.fromJson<String>(json['nome']),
       descricao: serializer.fromJson<String>(json['descricao']),
       valor: serializer.fromJson<double>(json['valor']),
-      imagem: serializer.fromJson<String?>(json['imagem']),
+      imagens: serializer.fromJson<List<String>?>(json['imagens']),
       confeitariaId: serializer.fromJson<int>(json['confeitariaId']),
     );
   }
@@ -712,7 +716,7 @@ class Produto extends DataClass implements Insertable<Produto> {
       'nome': serializer.toJson<String>(nome),
       'descricao': serializer.toJson<String>(descricao),
       'valor': serializer.toJson<double>(valor),
-      'imagem': serializer.toJson<String?>(imagem),
+      'imagens': serializer.toJson<List<String>?>(imagens),
       'confeitariaId': serializer.toJson<int>(confeitariaId),
     };
   }
@@ -722,14 +726,14 @@ class Produto extends DataClass implements Insertable<Produto> {
           String? nome,
           String? descricao,
           double? valor,
-          Value<String?> imagem = const Value.absent(),
+          Value<List<String>?> imagens = const Value.absent(),
           int? confeitariaId}) =>
       Produto(
         id: id ?? this.id,
         nome: nome ?? this.nome,
         descricao: descricao ?? this.descricao,
         valor: valor ?? this.valor,
-        imagem: imagem.present ? imagem.value : this.imagem,
+        imagens: imagens.present ? imagens.value : this.imagens,
         confeitariaId: confeitariaId ?? this.confeitariaId,
       );
   Produto copyWithCompanion(ProdutosCompanion data) {
@@ -738,7 +742,7 @@ class Produto extends DataClass implements Insertable<Produto> {
       nome: data.nome.present ? data.nome.value : this.nome,
       descricao: data.descricao.present ? data.descricao.value : this.descricao,
       valor: data.valor.present ? data.valor.value : this.valor,
-      imagem: data.imagem.present ? data.imagem.value : this.imagem,
+      imagens: data.imagens.present ? data.imagens.value : this.imagens,
       confeitariaId: data.confeitariaId.present
           ? data.confeitariaId.value
           : this.confeitariaId,
@@ -752,7 +756,7 @@ class Produto extends DataClass implements Insertable<Produto> {
           ..write('nome: $nome, ')
           ..write('descricao: $descricao, ')
           ..write('valor: $valor, ')
-          ..write('imagem: $imagem, ')
+          ..write('imagens: $imagens, ')
           ..write('confeitariaId: $confeitariaId')
           ..write(')'))
         .toString();
@@ -760,7 +764,7 @@ class Produto extends DataClass implements Insertable<Produto> {
 
   @override
   int get hashCode =>
-      Object.hash(id, nome, descricao, valor, imagem, confeitariaId);
+      Object.hash(id, nome, descricao, valor, imagens, confeitariaId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -769,7 +773,7 @@ class Produto extends DataClass implements Insertable<Produto> {
           other.nome == this.nome &&
           other.descricao == this.descricao &&
           other.valor == this.valor &&
-          other.imagem == this.imagem &&
+          other.imagens == this.imagens &&
           other.confeitariaId == this.confeitariaId);
 }
 
@@ -778,14 +782,14 @@ class ProdutosCompanion extends UpdateCompanion<Produto> {
   final Value<String> nome;
   final Value<String> descricao;
   final Value<double> valor;
-  final Value<String?> imagem;
+  final Value<List<String>?> imagens;
   final Value<int> confeitariaId;
   const ProdutosCompanion({
     this.id = const Value.absent(),
     this.nome = const Value.absent(),
     this.descricao = const Value.absent(),
     this.valor = const Value.absent(),
-    this.imagem = const Value.absent(),
+    this.imagens = const Value.absent(),
     this.confeitariaId = const Value.absent(),
   });
   ProdutosCompanion.insert({
@@ -793,7 +797,7 @@ class ProdutosCompanion extends UpdateCompanion<Produto> {
     required String nome,
     required String descricao,
     required double valor,
-    this.imagem = const Value.absent(),
+    this.imagens = const Value.absent(),
     required int confeitariaId,
   })  : nome = Value(nome),
         descricao = Value(descricao),
@@ -804,7 +808,7 @@ class ProdutosCompanion extends UpdateCompanion<Produto> {
     Expression<String>? nome,
     Expression<String>? descricao,
     Expression<double>? valor,
-    Expression<String>? imagem,
+    Expression<String>? imagens,
     Expression<int>? confeitariaId,
   }) {
     return RawValuesInsertable({
@@ -812,7 +816,7 @@ class ProdutosCompanion extends UpdateCompanion<Produto> {
       if (nome != null) 'nome': nome,
       if (descricao != null) 'descricao': descricao,
       if (valor != null) 'valor': valor,
-      if (imagem != null) 'imagem': imagem,
+      if (imagens != null) 'imagens': imagens,
       if (confeitariaId != null) 'confeitaria_id': confeitariaId,
     });
   }
@@ -822,14 +826,14 @@ class ProdutosCompanion extends UpdateCompanion<Produto> {
       Value<String>? nome,
       Value<String>? descricao,
       Value<double>? valor,
-      Value<String?>? imagem,
+      Value<List<String>?>? imagens,
       Value<int>? confeitariaId}) {
     return ProdutosCompanion(
       id: id ?? this.id,
       nome: nome ?? this.nome,
       descricao: descricao ?? this.descricao,
       valor: valor ?? this.valor,
-      imagem: imagem ?? this.imagem,
+      imagens: imagens ?? this.imagens,
       confeitariaId: confeitariaId ?? this.confeitariaId,
     );
   }
@@ -849,8 +853,9 @@ class ProdutosCompanion extends UpdateCompanion<Produto> {
     if (valor.present) {
       map['valor'] = Variable<double>(valor.value);
     }
-    if (imagem.present) {
-      map['imagem'] = Variable<String>(imagem.value);
+    if (imagens.present) {
+      map['imagens'] = Variable<String>(
+          $ProdutosTable.$converterimagensn.toSql(imagens.value));
     }
     if (confeitariaId.present) {
       map['confeitaria_id'] = Variable<int>(confeitariaId.value);
@@ -865,7 +870,7 @@ class ProdutosCompanion extends UpdateCompanion<Produto> {
           ..write('nome: $nome, ')
           ..write('descricao: $descricao, ')
           ..write('valor: $valor, ')
-          ..write('imagem: $imagem, ')
+          ..write('imagens: $imagens, ')
           ..write('confeitariaId: $confeitariaId')
           ..write(')'))
         .toString();
@@ -1240,7 +1245,7 @@ typedef $$ProdutosTableCreateCompanionBuilder = ProdutosCompanion Function({
   required String nome,
   required String descricao,
   required double valor,
-  Value<String?> imagem,
+  Value<List<String>?> imagens,
   required int confeitariaId,
 });
 typedef $$ProdutosTableUpdateCompanionBuilder = ProdutosCompanion Function({
@@ -1248,7 +1253,7 @@ typedef $$ProdutosTableUpdateCompanionBuilder = ProdutosCompanion Function({
   Value<String> nome,
   Value<String> descricao,
   Value<double> valor,
-  Value<String?> imagem,
+  Value<List<String>?> imagens,
   Value<int> confeitariaId,
 });
 
@@ -1293,8 +1298,10 @@ class $$ProdutosTableFilterComposer
   ColumnFilters<double> get valor => $composableBuilder(
       column: $table.valor, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get imagem => $composableBuilder(
-      column: $table.imagem, builder: (column) => ColumnFilters(column));
+  ColumnWithTypeConverterFilters<List<String>?, List<String>, String>
+      get imagens => $composableBuilder(
+          column: $table.imagens,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
 
   $$ConfeitariasTableFilterComposer get confeitariaId {
     final $$ConfeitariasTableFilterComposer composer = $composerBuilder(
@@ -1338,8 +1345,8 @@ class $$ProdutosTableOrderingComposer
   ColumnOrderings<double> get valor => $composableBuilder(
       column: $table.valor, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get imagem => $composableBuilder(
-      column: $table.imagem, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get imagens => $composableBuilder(
+      column: $table.imagens, builder: (column) => ColumnOrderings(column));
 
   $$ConfeitariasTableOrderingComposer get confeitariaId {
     final $$ConfeitariasTableOrderingComposer composer = $composerBuilder(
@@ -1383,8 +1390,8 @@ class $$ProdutosTableAnnotationComposer
   GeneratedColumn<double> get valor =>
       $composableBuilder(column: $table.valor, builder: (column) => column);
 
-  GeneratedColumn<String> get imagem =>
-      $composableBuilder(column: $table.imagem, builder: (column) => column);
+  GeneratedColumnWithTypeConverter<List<String>?, String> get imagens =>
+      $composableBuilder(column: $table.imagens, builder: (column) => column);
 
   $$ConfeitariasTableAnnotationComposer get confeitariaId {
     final $$ConfeitariasTableAnnotationComposer composer = $composerBuilder(
@@ -1434,7 +1441,7 @@ class $$ProdutosTableTableManager extends RootTableManager<
             Value<String> nome = const Value.absent(),
             Value<String> descricao = const Value.absent(),
             Value<double> valor = const Value.absent(),
-            Value<String?> imagem = const Value.absent(),
+            Value<List<String>?> imagens = const Value.absent(),
             Value<int> confeitariaId = const Value.absent(),
           }) =>
               ProdutosCompanion(
@@ -1442,7 +1449,7 @@ class $$ProdutosTableTableManager extends RootTableManager<
             nome: nome,
             descricao: descricao,
             valor: valor,
-            imagem: imagem,
+            imagens: imagens,
             confeitariaId: confeitariaId,
           ),
           createCompanionCallback: ({
@@ -1450,7 +1457,7 @@ class $$ProdutosTableTableManager extends RootTableManager<
             required String nome,
             required String descricao,
             required double valor,
-            Value<String?> imagem = const Value.absent(),
+            Value<List<String>?> imagens = const Value.absent(),
             required int confeitariaId,
           }) =>
               ProdutosCompanion.insert(
@@ -1458,7 +1465,7 @@ class $$ProdutosTableTableManager extends RootTableManager<
             nome: nome,
             descricao: descricao,
             valor: valor,
-            imagem: imagem,
+            imagens: imagens,
             confeitariaId: confeitariaId,
           ),
           withReferenceMapper: (p0) => p0

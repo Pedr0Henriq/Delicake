@@ -21,13 +21,13 @@ class FormularioCadastroProdutoState extends State<FormularioCadastroProduto> {
   final TextEditingController descricaoController = TextEditingController();
   final TextEditingController valorController = TextEditingController();
   final ImagePicker _picker = ImagePicker(); //Escolher imagens da galeria
-  File? _imagemProduto; // imagem escolhida do produto
+  List<String> imagensSelecionadas = []; // imagem escolhida do produto
 
   // Função para carregar imagem da galeria e armazenar em _imagemProduto
   Future<void> _carregarImagem() async{
-    final XFile? imagemEscolhida = await _picker.pickImage(source: ImageSource.gallery);
+    final List<XFile> imagensEscolhidas = await _picker.pickMultiImage();
     setState(() {
-      _imagemProduto = File(imagemEscolhida!.path);
+      imagensSelecionadas.addAll(imagensEscolhidas.map((img)=>img.path));
     });
     }
   // Função para mostrar mensagens temporárias na tela (SnackBars)
@@ -41,12 +41,11 @@ class FormularioCadastroProdutoState extends State<FormularioCadastroProduto> {
     final nome = nomeController.text;
     final descricao = descricaoController.text;
     final valor = valorController.text;
-    final String caminhoImagem = _imagemProduto!.path;
     if (nome.isEmpty || descricao.isEmpty || valor.isEmpty) {
       _showSnackBar('Preencha todos os campos!');
       return false;
     }
-    else if (_imagemProduto == null) {
+    else if (imagensSelecionadas.isEmpty) {
       _showSnackBar('Selecione pelo menos uma imagem!');
       return false;
     }
@@ -55,7 +54,7 @@ class FormularioCadastroProdutoState extends State<FormularioCadastroProduto> {
       nome: drift.Value(nome),
       descricao: drift.Value(descricao),
       valor: drift.Value(double.tryParse(valor) ?? 0.0),
-      imagem: drift.Value(caminhoImagem),
+      imagens: drift.Value(imagensSelecionadas),
       confeitariaId: drift.Value(widget.confeitariaId!),
     );
 
@@ -125,19 +124,21 @@ class FormularioCadastroProdutoState extends State<FormularioCadastroProduto> {
                       value == null || value.isEmpty ? 'Campo obrigatório' : null,
             ),
             SizedBox(height: 7.0),
-            
-            // Seção da imagem(exibe o caminho dela ou mensagem)
-            _imagemProduto == null
-                ? Text('Nenhuma imagem selecionada.')
-                : Text(_imagemProduto!.path),
-            // Botão para selecionar imagem da galeria
             ElevatedButton.icon(onPressed: _carregarImagem, icon: Icon(Icons.photo_library), label: Text('Selecionar imagem da galeria'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: AppColors.mainColor,
                   padding: EdgeInsets.symmetric(horizontal: 16,vertical: 12),
                   textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)
-                ),)
+                ),),
+                const SizedBox(height: 10,),
+                Wrap(
+                  spacing: 8,
+                  children: imagensSelecionadas.map((path){
+                    return Image.file(File(path),width: 80,height: 80,fit: BoxFit.cover,);
+                  }).toList(),
+                ),
+            
      ], ),
     ),);
   }
