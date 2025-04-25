@@ -20,23 +20,23 @@ class FormularioCadastroProdutoState extends State<FormularioCadastroProduto> {
   final TextEditingController nomeController = TextEditingController();
   final TextEditingController descricaoController = TextEditingController();
   final TextEditingController valorController = TextEditingController();
-  final ImagePicker _picker = ImagePicker();
-  File? _imagemProduto;
+  final ImagePicker _picker = ImagePicker(); //Escolher imagens da galeria
+  File? _imagemProduto; // imagem escolhida do produto
 
+  // Função para carregar imagem da galeria e armazenar em _imagemProduto
   Future<void> _carregarImagem() async{
     final XFile? imagemEscolhida = await _picker.pickImage(source: ImageSource.gallery);
-    print('Imagem = ${imagemEscolhida!.path}');
     setState(() {
-      _imagemProduto = File(imagemEscolhida.path);
+      _imagemProduto = File(imagemEscolhida!.path);
     });
     }
-
+  // Função para mostrar mensagens temporárias na tela (SnackBars)
   void _showSnackBar(String mensagem) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(mensagem)),
     );
   }
-
+ // Função principal para enviar os dados preenchidos no formulário, ela faz as validações se os campos estão vazios e se alguma imagem foi seleciona
   Future<bool> enviarDados() async {
     final nome = nomeController.text;
     final descricao = descricaoController.text;
@@ -66,6 +66,7 @@ class FormularioCadastroProdutoState extends State<FormularioCadastroProduto> {
     
   }
 
+  // Libera os recursos dos controllers ao destruir o widget
   @override
   void dispose() {
     nomeController.dispose();
@@ -125,10 +126,11 @@ class FormularioCadastroProdutoState extends State<FormularioCadastroProduto> {
             ),
             SizedBox(height: 7.0),
             
-            // Seção de Imagens (parte corrigida)
+            // Seção da imagem(exibe o caminho dela ou mensagem)
             _imagemProduto == null
                 ? Text('Nenhuma imagem selecionada.')
                 : Text(_imagemProduto!.path),
+            // Botão para selecionar imagem da galeria
             ElevatedButton.icon(onPressed: _carregarImagem, icon: Icon(Icons.photo_library), label: Text('Selecionar imagem da galeria'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
