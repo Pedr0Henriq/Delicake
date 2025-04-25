@@ -1,8 +1,10 @@
 import 'dart:io';
-
 import 'package:app_desafio/database/database.dart';
 import 'package:app_desafio/ui/_core/app_colors.dart';
 import 'package:flutter/material.dart';
+
+
+/*Esse widget é a maneira que organizo cada produto pra ser apresentado na tela da confeitaria */
 
 class ArquiteturaProduto extends StatefulWidget {
   final Produto produto;
