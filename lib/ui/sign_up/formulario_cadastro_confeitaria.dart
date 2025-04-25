@@ -16,7 +16,6 @@ class FormularioCadastroConfeitaria extends StatefulWidget {
 }
 
 class FormularioCadastroConfeitariaState extends State<FormularioCadastroConfeitaria> {
-
   final AppDatabase _db = AppDatabase();
   late TextEditingController nomeController = TextEditingController();
   late TextEditingController telefoneController = TextEditingController();
@@ -30,7 +29,11 @@ class FormularioCadastroConfeitariaState extends State<FormularioCadastroConfeit
   LatLng? coordenadas,novasCoordenadas;
 
 
+/*
+Função initState:
+  Basicamente foi criada para o fluxo de edição de confeitaria, quando a tela for chamada ela já seta os textformfield com os dados atuais da confeitaria
 
+ */
   @override
   void initState() {
     super.initState();
@@ -45,7 +48,27 @@ class FormularioCadastroConfeitariaState extends State<FormularioCadastroConfeit
       numeroController.text = widget.confeitaria!.numero;
       }
   }
+/*
+Função dispose:
+  Basicamente foi criada para descartar os valores armazenados pelos Controllers após a tela ser fechada
 
+ */
+    @override
+  void dispose(){
+    nomeController.dispose();
+    telefoneController.dispose();
+    cepController.dispose();
+    numeroController.dispose();
+    ruaController.dispose();
+    bairroController.dispose();
+    cidadeController.dispose();
+    estadoController.dispose();
+    super.dispose();
+  }
+
+  /*
+  Função de buscarEndereço: Quando o usuário informa o cep da confeitaria, o sistema vai buscar o endereço da mesma por meio da API viacep
+  e já coloca os dados da rua,cidade,bairro e estado, bastando apenas o usuário informar o número da casa. */
 
   Future<void> buscarEndereco(String cep) async {
     final url = Uri.parse('https://viacep.com.br/ws/$cep/json/');
@@ -68,13 +91,30 @@ class FormularioCadastroConfeitariaState extends State<FormularioCadastroConfeit
     }
   }
 
+ /*
+  Função de obterCoordenadas: Quando o usuário aperta o botão de cadastrar na tela de cadastroScreen, é chamada a função enviarDados da tela, porém essa função chama a função enviarDados da tela
+  FormulárioCadastroConfeitaria e essa por sua vez pega os dados de endereço que foram fornecidos e utilizando o  geocoding busca as coordenadas desse endereço para salvar no banco de dados
+  por meio dessa função. */
+    Future<LatLng?> obterCoordenadas(String endereco) async{
+    try {
+      List<Location> locations = await locationFromAddress(endereco);
+      if(locations.isNotEmpty) return LatLng(locations.first.latitude, locations.first.longitude);
+    } catch (e) {
+      _showSnackBar('Erro ao buscar coordenadas: $e');
+    }
+    return null;
+  } 
+
   void _showSnackBar(String mensagem) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(mensagem)),
     );
   }
 
-
+/*
+A função de obterCamposAlterados é utilizada apenas quando o fluxo for de edição de confeitaria, ela vai receber os parâmetros que estão no bd da confeitaria
+e comparar com os que foram colocados nos campos do formulário, cada diferença é adicionada num map camposAlterados e no final ele é retornado.
+ */
 Future<Map<String, dynamic>> obterCamposAlterados({
   required Confeitaria confeitariaOriginal,
   required String nome,
@@ -139,7 +179,10 @@ Future<Map<String, dynamic>> obterCamposAlterados({
 }
 
 
-
+/*
+Função updateConfeitariaPorCampos:
+Basicamente, é uma função que vai pegar o map camposAlterados e os valores que estão lá serão jogados para a companion que por sua vez vai se conectar com ConfeitariasCompanion
+e por fim é chamado o objeto _db para chamar a função updateConfeitaria no database.dart */
 Future<void> updateConfeitariaPorCampos(int confeitariaId, Map<String, dynamic> camposAlterados) async {
   if (camposAlterados.isEmpty) return;
 
@@ -161,7 +204,9 @@ Future<void> updateConfeitariaPorCampos(int confeitariaId, Map<String, dynamic> 
 
 
 
-
+/*
+Função salvarAlterações: basicamente ela serve como a função principal para o fluxo de edição de uma confeitaria. Ela vai chamar a função de obterCamposAlterados e receber o retorno.
+Se esse retorno não for vazio, ela chama a função de updateConfeitariaPorCampos e volta para a tela anterior.*/
 Future<void> salvarAlteracoes() async {
   final camposAtualizados = await obterCamposAlterados(
     confeitariaOriginal: widget.confeitaria!,
@@ -189,7 +234,8 @@ Future<void> salvarAlteracoes() async {
   Navigator.pop(context,widget.confeitaria);
 }
 
-
+/*
+Função enviarDados: É a função que vai criar a confeitaria quando o fluxo pra chamada dessa tela for o de cadastro */
   Future<bool> enviarDados({Map<String,dynamic>? camposAtualizados}) async{
     final nome = nomeController.text;
     final telefone = telefoneController.text;
@@ -219,35 +265,34 @@ Future<void> salvarAlteracoes() async {
 
       await _db.insertConfeitaria(novaConfeitaria);
       _showSnackBar('Confeitaria cadastrada com sucesso!');
-      print(_db.getAllConfeitarias());
       return true;
     }
     return false;
 
   }
 
-  Future<LatLng?> obterCoordenadas(String endereco) async{
-    try {
-      List<Location> locations = await locationFromAddress(endereco);
-      if(locations.isNotEmpty) return LatLng(locations.first.latitude, locations.first.longitude);
-    } catch (e) {
-      _showSnackBar('Erro ao buscar coordenadas: $e');
-    }
-    return null;
-  } 
 
-  @override
-  void dispose(){
-    nomeController.dispose();
-    telefoneController.dispose();
-    cepController.dispose();
-    numeroController.dispose();
-    ruaController.dispose();
-    bairroController.dispose();
-    cidadeController.dispose();
-    estadoController.dispose();
-    super.dispose();
-  }
+/*
+Por fim, comento apenas as questões das regras de validação dos campos. os campos de Nome e número são verificados se estão vazios apenas. já o de telefone tem um regex que  
+verifica o seguinte:
+Parte | Significado
+^ | Início da string
+\(? | Um parêntese esquerdo opcional ( ( ), usado para DDD com parênteses
+\d{2} | Dois dígitos numéricos — corresponde ao DDD (ex: 83, 11, etc.)
+\)? | Um parêntese direito opcional ( ) )
+[\s-]? | Um espaço (\s) ou hífen (-) opcional — separador entre DDD e número
+\d{4,5} | De 4 a 5 dígitos — é o início do número de telefone, pode ser 4 (fixo antigo) ou 5 (celular com 9 na frente)
+-? | Um hífen opcional — separando os dois blocos do número
+\d{4} | Quatro dígitos finais do número de telefone
+$ | Fim da string 
+
+Já para o de cep:
+Parte | Significado
+^ | Início da string
+\d{8} | Exatamente 8 dígitos numéricos (\d = qualquer dígito de 0 a 9)
+$ | Fim da string
+*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -308,10 +353,23 @@ Future<void> salvarAlteracoes() async {
                           }
                           return null;
                         },
-                        onChanged: (value) {
+                        onChanged: (value) async{
                           if (value.length == 8) {
-                            buscarEndereco(value);
+                            showDialog(context: context,
+                            barrierDismissible: false, 
+                            builder: (context) => AlertDialog(
+                              content: Row(
+                                children: const [
+                                  CircularProgressIndicator(),
+                                  SizedBox(width: 16,),
+                                  Text('Buscando cep...')
+                                ],
+                              ),
+                            ));
+                            await buscarEndereco(value);
+                            if(context.mounted) Navigator.of(context).pop();
                           }
+                          
                         },
                       ),
                       ),
