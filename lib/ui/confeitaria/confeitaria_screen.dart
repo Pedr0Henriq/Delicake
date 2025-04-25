@@ -16,27 +16,25 @@ class ConfeitariaScreen extends StatefulWidget {
 
 class _ConfeitariaScreenState extends State<ConfeitariaScreen> with RouteAware{
  AppDatabase db = AppDatabase();
- List<Produto> produtos = [];
-
-
+ List<Produto> produtos = []; //lista dos produtos da confeitaria
 
 
 @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute);
+    routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute); //assina a rota para monitoramento
   }
 
   @override
   void dispose() {
-    routeObserver.unsubscribe(this);
+    routeObserver.unsubscribe(this); //cancela a assinatura da rota
     super.dispose();
   }
 
 
 @override
   void didPush() {
-    pegaProdutos();
+    pegaProdutos(); //chama a função quando a tela é empurrada na pilha de navegação
   }
 
 
@@ -46,6 +44,7 @@ void initState() {
 pegaProdutos();
 }
 
+//função que busca os produtos no banco de dados
   void pegaProdutos() async{
   List<Produto> ps = await db.getProdutos(widget.confeitaria.id);
         setState(() {
@@ -54,6 +53,7 @@ pegaProdutos();
   
   }
 
+//função que deleta a confeitaria e seus produtos, observe que segui a ordem de deletar os produtos primeiro, para que não haja sqlexception, é uma boa prática de banco de dados. 
   Future<void> deleteConfeitariaById(int id) async {
   await (db.delete(db.produtos)
     ..where((tbl)=> tbl.confeitariaId.equals(id))).go();
@@ -62,6 +62,7 @@ pegaProdutos();
   ).go();
 }
 
+//essa função é mais um controle para que o usuário confirme que é essa ação que ele quer fazer e não que ele fezisso por engano
 void deletarConfeitaria(){
    showDialog(context: context, builder: (context)=> AlertDialog(
     title: Text('Confirmar exclusão'),
@@ -80,7 +81,7 @@ void deletarConfeitaria(){
   ));
 }
 
-
+//função que vai editar a confeitaria
 void editarConfeitaria() async{
 Confeitaria novaConfeitaria =  await Navigator.push(context, MaterialPageRoute(builder: (context){
     return CadastroScreen(econfeitaria: true,confeitaria: widget.confeitaria);
