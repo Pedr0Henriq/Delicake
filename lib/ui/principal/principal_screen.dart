@@ -16,7 +16,7 @@ class PrincipalScreen extends StatefulWidget {
 
 class _PrincipalScreenState extends State<PrincipalScreen> {
   late AppDatabase _db;
-  List<Marker> _markers = [];
+  List<Marker> _markers = []; //lista de marcadores no mapa
   bool _loading = true;
 
   @override
@@ -26,6 +26,7 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
     _loadConfeitarias();
   }
 
+/*Essa função ela busca as confeitarias no banco de dados e cria os marcados no mapa para cada uma. */
   void _loadConfeitarias() async{
     
     final lista = await _db.getAllConfeitarias();
@@ -77,7 +78,7 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
       body: Stack(
         children: [
           _loading ? Center(child: CircularProgressIndicator(),)
-          : FlutterMap(options: MapOptions(
+          : FlutterMap(options: MapOptions( // Eu utilizei o fluttermap pois é uma api open-source, tive a opção do google_maps também, porém é paga. O flutter_maps me entregou um ótimo resultado, estou bem satisfeito
             initialCenter: LatLng(-7.1153, -34.861),
             initialZoom: 13,
         ), children: [
@@ -95,7 +96,6 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
            final result = await Navigator.push(context, MaterialPageRoute(builder: (context){
               return CadastroScreen(econfeitaria: true);
             }));
-            print( 'result = $result ');
             if(result == true){
                   _loadConfeitarias();
 
