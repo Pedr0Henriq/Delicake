@@ -1,6 +1,6 @@
 import 'package:app_desafio/database/database.dart';
 import 'package:app_desafio/ui/_core/app_colors.dart';
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -187,16 +187,16 @@ Future<void> updateConfeitariaPorCampos(int confeitariaId, Map<String, dynamic> 
   if (camposAlterados.isEmpty) return;
 
   final companion = ConfeitariasCompanion(
-    nome: camposAlterados.containsKey('nome') ? Value(camposAlterados['nome']) : const Value.absent(),
-    telefone: camposAlterados.containsKey('telefone') ? Value(camposAlterados['telefone']) : const Value.absent(),
-    cep: camposAlterados.containsKey('cep') ? Value(camposAlterados['cep']) : const Value.absent(),
-    rua: camposAlterados.containsKey('rua') ? Value(camposAlterados['rua']) : const Value.absent(),
-    cidade: camposAlterados.containsKey('cidade') ? Value(camposAlterados['cidade']) : const Value.absent(),
-    bairro: camposAlterados.containsKey('bairro') ? Value(camposAlterados['bairro']) : const Value.absent(),
-    estado: camposAlterados.containsKey('estado') ? Value(camposAlterados['estado']) : const Value.absent(),
-    numero: camposAlterados.containsKey('numero') ? Value(camposAlterados['numero']) : const Value.absent(),
-    latitude: camposAlterados.containsKey('latitude') ? Value(camposAlterados['latitude']) : const Value.absent(),
-    longitude: camposAlterados.containsKey('longitude') ? Value(camposAlterados['longitude']) : const Value.absent(),
+    nome: camposAlterados.containsKey('nome') ? drift.Value(camposAlterados['nome']) : const drift.Value.absent(),
+    telefone: camposAlterados.containsKey('telefone') ? drift.Value(camposAlterados['telefone']) : const drift.Value.absent(),
+    cep: camposAlterados.containsKey('cep') ? drift.Value(camposAlterados['cep']) : const drift.Value.absent(),
+    rua: camposAlterados.containsKey('rua') ? drift.Value(camposAlterados['rua']) : const drift.Value.absent(),
+    cidade: camposAlterados.containsKey('cidade') ? drift.Value(camposAlterados['cidade']) : const drift.Value.absent(),
+    bairro: camposAlterados.containsKey('bairro') ? drift.Value(camposAlterados['bairro']) : const drift.Value.absent(),
+    estado: camposAlterados.containsKey('estado') ? drift.Value(camposAlterados['estado']) : const drift.Value.absent(),
+    numero: camposAlterados.containsKey('numero') ? drift.Value(camposAlterados['numero']) : const drift.Value.absent(),
+    latitude: camposAlterados.containsKey('latitude') ? drift.Value(camposAlterados['latitude']) : const drift.Value.absent(),
+    longitude: camposAlterados.containsKey('longitude') ? drift.Value(camposAlterados['longitude']) : const drift.Value.absent(),
   );
 
   await _db.updateConfeitaria(confeitariaId, companion);
@@ -250,16 +250,16 @@ Função enviarDados: É a função que vai criar a confeitaria quando o fluxo p
 
     if(coordenadas!=null){
       final novaConfeitaria = ConfeitariasCompanion(
-        nome: Value(nome),
-        telefone: Value(telefone),
-        cep: Value(cep),
-        numero: Value(numero),
-        rua: Value(rua),
-        bairro: Value(bairro),
-        cidade: Value(cidade),
-        estado: Value(estado),
-        latitude: Value(coordenadas!.latitude),
-        longitude: Value(coordenadas!.longitude),
+        nome: drift.Value(nome),
+        telefone: drift.Value(telefone),
+        cep: drift.Value(cep),
+        numero: drift.Value(numero),
+        rua: drift.Value(rua),
+        bairro: drift.Value(bairro),
+        cidade: drift.Value(cidade),
+        estado: drift.Value(estado),
+        latitude: drift.Value(coordenadas!.latitude),
+        longitude: drift.Value(coordenadas!.longitude),
       );
 
       await _db.insertConfeitaria(novaConfeitaria);
@@ -300,7 +300,8 @@ $ | Fim da string
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: ListView(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Nome da Confeitaria
                   TextFormField(
