@@ -295,163 +295,166 @@ $ | Fim da string
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.mainColor,
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: ListView(
-            children: [
-              // Nome da Confeitaria
-                TextFormField(
-                  controller: nomeController,
-                  decoration: InputDecoration(
-                    labelText: 'Nome da Confeitaria',
-                    border: OutlineInputBorder(),
-                    fillColor: Colors.white,
-                    filled: true,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: ListView(
+              children: [
+                // Nome da Confeitaria
+                  TextFormField(
+                    controller: nomeController,
+                    decoration: InputDecoration(
+                      labelText: 'Nome da Confeitaria',
+                      border: OutlineInputBorder(),
+                      fillColor: Colors.white,
+                      filled: true,
+                    ),
+                    validator: (value) =>
+                        value == null || value.isEmpty ? 'Campo obrigatório' : null,
                   ),
-                  validator: (value) =>
-                      value == null || value.isEmpty ? 'Campo obrigatório' : null,
-                ),
-                SizedBox(height: 7.0,),
-                // Telefone
-                TextFormField(
-                  controller: telefoneController,
-                  keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    labelText: 'Telefone',
-                    border: OutlineInputBorder(),
-                    fillColor: Colors.white,
-                    filled: true,
+                  SizedBox(height: 7.0,),
+                  // Telefone
+                  TextFormField(
+                    controller: telefoneController,
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      labelText: 'Telefone',
+                      border: OutlineInputBorder(),
+                      fillColor: Colors.white,
+                      filled: true,
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Campo obrigatório';
+                      if (!RegExp(r'^\(?\d{2}\)?[\s-]?\d{4,5}-?\d{4}$').hasMatch(value)) {
+                        return 'Telefone inválido';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return 'Campo obrigatório';
-                    if (!RegExp(r'^\(?\d{2}\)?[\s-]?\d{4,5}-?\d{4}$').hasMatch(value)) {
-                      return 'Telefone inválido';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 7.0,),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: TextFormField(
-                        controller: cepController,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: 'CEP',
-                          border: OutlineInputBorder(),
-                          fillColor: Colors.white,
-                    filled: true,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) return 'Campo obrigatório';
-                          if (!RegExp(r'^\d{8}$').hasMatch(value)) {
-                            return 'CEP inválido';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) async{
-                          if (value.length == 8) {
-                            showDialog(context: context,
-                            barrierDismissible: false, 
-                            builder: (context) => AlertDialog(
-                              content: Row(
-                                children: const [
-                                  CircularProgressIndicator(),
-                                  SizedBox(width: 16,),
-                                  Text('Buscando cep...')
-                                ],
-                              ),
-                            ));
-                            await buscarEndereco(value);
-                            if(context.mounted) Navigator.of(context).pop();
-                          }
-                          
-                        },
-                      ),
-                      ),
+                  SizedBox(height: 7.0,),
+                  Row(
+                    children: [
                       Expanded(
-                        flex: 1,
-                        child: // Número
-                TextFormField(
-                  controller: numeroController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Número',
-                    border: OutlineInputBorder(),
-                    fillColor: Colors.white,
-                    filled: true,
+                        flex: 2,
+                        child: TextFormField(
+                          controller: cepController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            labelText: 'CEP',
+                            border: OutlineInputBorder(),
+                            fillColor: Colors.white,
+                      filled: true,
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) return 'Campo obrigatório';
+                            if (!RegExp(r'^\d{8}$').hasMatch(value)) {
+                              return 'CEP inválido';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) async{
+                            if (value.length == 8) {
+                              showDialog(context: context,
+                              barrierDismissible: false, 
+                              builder: (context) => AlertDialog(
+                                content: Row(
+                                  children: const [
+                                    CircularProgressIndicator(),
+                                    SizedBox(width: 16,),
+                                    Text('Buscando cep...')
+                                  ],
+                                ),
+                              ));
+                              await buscarEndereco(value);
+                              if(context.mounted) Navigator.of(context).pop();
+                            }
+                            
+                          },
+                        ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: // Número
+                  TextFormField(
+                    controller: numeroController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'Número',
+                      border: OutlineInputBorder(),
+                      fillColor: Colors.white,
+                      filled: true,
+                    ),
+                    validator: (value) =>
+                        value == null || value.isEmpty ? 'Campo obrigatório' : null,
+                  ),)
+                    ],
                   ),
-                  validator: (value) =>
-                      value == null || value.isEmpty ? 'Campo obrigatório' : null,
-                ),)
-                  ],
-                ),
-                SizedBox(height: 7.0,),
-                Row(
-                  children: [
-                    Expanded(
-                    flex:3,
-                    child: // Rua
-                TextFormField(
-                  controller: ruaController,
-                  decoration: InputDecoration(
-                    labelText: 'Rua',
-                    border: OutlineInputBorder(),
-                  fillColor: Colors.white,
-                    filled: true,),
-                  readOnly: true,
-                ),),
-                Expanded(
-                  flex: 2,
-                  child: // Bairro
-                TextFormField(
-                  controller: bairroController,
-                  decoration: InputDecoration(
-                    labelText: 'Bairro',
-                    border: OutlineInputBorder(),
+                  SizedBox(height: 7.0,),
+                  Row(
+                    children: [
+                      Expanded(
+                      flex:3,
+                      child: // Rua
+                  TextFormField(
+                    controller: ruaController,
+                    decoration: InputDecoration(
+                      labelText: 'Rua',
+                      border: OutlineInputBorder(),
                     fillColor: Colors.white,
-                    filled: true,
+                      filled: true,),
+                    readOnly: true,
+                  ),),
+                  Expanded(
+                    flex: 2,
+                    child: // Bairro
+                  TextFormField(
+                    controller: bairroController,
+                    decoration: InputDecoration(
+                      labelText: 'Bairro',
+                      border: OutlineInputBorder(),
+                      fillColor: Colors.white,
+                      filled: true,
+                    ),
+                    readOnly: true,
+                  ),),
+                    ],
                   ),
-                  readOnly: true,
-                ),),
-                  ],
-                ),
-                SizedBox(height: 7.0,),
-                Row(children: [
-                    Expanded(
-                      flex: 3,
-                      child: // Cidade
-                TextFormField(
-                  controller: cidadeController,
-                  decoration: InputDecoration(
-                    labelText: 'Cidade',
-                    border: OutlineInputBorder(),
-                    fillColor: Colors.white,
-                    filled: true,
-                  ),
-                  readOnly: true,
-                ),),
-                Expanded(
-                  flex: 1,
-                  child: // Estado
-                TextFormField(
-                  controller: estadoController,
-                  decoration: InputDecoration(
-                    labelText: 'Estado',
-                    border: OutlineInputBorder(),
-                    fillColor: Colors.white,
-                    filled: true,
-                  ),
-                  readOnly: true,
-                ),),
-                  ],),
-                SizedBox(height: 15.0,),
-                
-            ],
-          ),),
+                  SizedBox(height: 7.0,),
+                  Row(children: [
+                      Expanded(
+                        flex: 3,
+                        child: // Cidade
+                  TextFormField(
+                    controller: cidadeController,
+                    decoration: InputDecoration(
+                      labelText: 'Cidade',
+                      border: OutlineInputBorder(),
+                      fillColor: Colors.white,
+                      filled: true,
+                    ),
+                    readOnly: true,
+                  ),),
+                  Expanded(
+                    flex: 1,
+                    child: // Estado
+                  TextFormField(
+                    controller: estadoController,
+                    decoration: InputDecoration(
+                      labelText: 'Estado',
+                      border: OutlineInputBorder(),
+                      fillColor: Colors.white,
+                      filled: true,
+                    ),
+                    readOnly: true,
+                  ),),
+                    ],),
+                  SizedBox(height: 15.0,),
+                  
+              ],
+            ),),
+      ),
     );
   }
 

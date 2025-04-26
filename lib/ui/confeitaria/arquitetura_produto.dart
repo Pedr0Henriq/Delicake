@@ -31,32 +31,34 @@ class ArquiteturaProduto extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 10),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              produto.nome,
-              style: TextStyle(
-                fontSize: 23,
-                fontWeight: FontWeight.bold,
-                color: AppColors.mainColor,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                produto.nome,
+                style: TextStyle(
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.mainColor,
+                ),
               ),
-            ),
-            Text(
-              'R\$ ${produto.valor.toStringAsFixed(2)}',
-              style: TextStyle(
-                fontSize: 20,
-                color: AppColors.mainColor,
+              Text(
+                'R\$ ${produto.valor.toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: AppColors.mainColor,
+                ),
               ),
-            ),
-            Text(
-              produto.descricao,
-              style: TextStyle(
-                fontSize: 18,
-                color: AppColors.mainColor,
+              Text(
+                produto.descricao,
+                style: TextStyle(
+                  fontSize: 18,
+                  color: AppColors.mainColor,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );

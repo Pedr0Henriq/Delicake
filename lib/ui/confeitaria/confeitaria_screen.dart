@@ -131,100 +131,107 @@ if (result == true) {
         backgroundColor: AppColors.secondColor,
       ),
       body: Stack(children: [
-        SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            spacing: 32.0,
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.45,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: AppColors.secondColor,
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(32),
-                        bottomRight: Radius.circular(32))),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  spacing: 50.0,
-                  children: [
-                    Icon(
-                      Icons.cake,
-                      size: 100,
-                      color: AppColors.backgroundColor,
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 15),
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      child: ListView(
-                        children: [
-                          Text(
-                            'Rua: ${widget.confeitaria.rua}',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: AppColors.backgroundColor,
-                            ),
-                          ),
-                          Text(
-                            'Número: ${widget.confeitaria.numero}',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: AppColors.backgroundColor,
-                            ),
-                          ),
-                          Text(
-                            'Bairro: ${widget.confeitaria.bairro}',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: AppColors.backgroundColor,
-                            ),
-                          ),
-                          Text(
-                            'Cidade: ${widget.confeitaria.cidade}',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: AppColors.backgroundColor,
-                            ),
-                          ),
-                          Text(
-                            'CEP: ${widget.confeitaria.cep}',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: AppColors.backgroundColor,
-                            ),
-                          ),
-                          Text(
-                            'Estado: ${widget.confeitaria.estado}',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: AppColors.backgroundColor,
-                            ),
-                          ),
-                        ],
+        Positioned.fill(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              spacing: 32.0,
+              children: [
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: AppColors.secondColor,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(32),
+                          bottomRight: Radius.circular(32))),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 20,),
+                      Icon(
+                        Icons.cake,
+                        size: 100,
+                        color: AppColors.backgroundColor,
                       ),
-                    ),
-                  ],
+                      Container(
+                        padding: EdgeInsets.only(left: 15),
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        child: ListView(
+                          physics: NeverScrollableScrollPhysics(),
+                          children: [
+                            Text(
+                              'Rua: ${widget.confeitaria.rua}',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: AppColors.backgroundColor,
+                              ),
+                            ),
+                            Text(
+                              'Número: ${widget.confeitaria.numero}',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: AppColors.backgroundColor,
+                              ),
+                            ),
+                            Text(
+                              'Bairro: ${widget.confeitaria.bairro}',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: AppColors.backgroundColor,
+                              ),
+                            ),
+                            Text(
+                              'Cidade: ${widget.confeitaria.cidade}',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: AppColors.backgroundColor,
+                              ),
+                            ),
+                            Text(
+                              'CEP: ${widget.confeitaria.cep}',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: AppColors.backgroundColor,
+                              ),
+                            ),
+                            Text(
+                              'Estado: ${widget.confeitaria.estado}',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: AppColors.backgroundColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Text(
-                'Produtos',
-                style: TextStyle(
-                    fontFamily: 'LobsterTwo',
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.mainColor),
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 30),
-                height: MediaQuery.of(context).size.height * 0.15,
-                child: Column(
-                  children: List.generate(produtos.length, (index){
-                    return Padding(padding: const EdgeInsets.only(bottom: 8.0),
-                    child: ArquiteturaProduto(produto: produtos[index]),);
-                  }),
+                SizedBox(
+                  height: 32.0,
                 ),
-              )
-            ],
+                Center(
+                  child: Text(
+                    'Produtos',
+                    style: TextStyle(
+                        fontFamily: 'LobsterTwo',
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.mainColor),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 30, right: 30),
+                  child: Column(
+                    children: List.generate(produtos.length, (index){
+                      return Padding(padding: const EdgeInsets.only(bottom: 8.0),
+                      child: ArquiteturaProduto(produto: produtos[index]),);
+                    }),
+                  ),
+                ),
+                SizedBox(height: 80,),
+              ],
+            ),
           ),
         ),
         Positioned(

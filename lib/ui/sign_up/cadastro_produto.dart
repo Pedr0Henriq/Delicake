@@ -77,69 +77,106 @@ class FormularioCadastroProdutoState extends State<FormularioCadastroProduto> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: AppColors.mainColor,
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            // Campo Nome do Produto
-            TextFormField(
-              controller: nomeController,
-              decoration: InputDecoration(
-                labelText: 'Nome do Produto',
-                border: OutlineInputBorder(),
-                fillColor: Colors.white,
-                filled: true,
-              ),
-              validator: (value) =>
-                      value == null || value.isEmpty ? 'Campo obrigatório' : null,
-            ),
-            SizedBox(height: 7.0),
-            
-            // Campo Descrição
-            TextFormField(
-              controller: descricaoController,
-              decoration: InputDecoration(
-                labelText: 'Descrição',
-                border: OutlineInputBorder(),
-                fillColor: Colors.white,
-                filled: true,
-              ),
-              validator: (value) =>
-                      value == null || value.isEmpty ? 'Campo obrigatório' : null,
-            ),
-            SizedBox(height: 7.0),
-            
-            // Campo Valor
-            TextFormField(
-              controller: valorController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: 'Valor',
-                border: OutlineInputBorder(),
-                fillColor: Colors.white,
-                filled: true,
-              ),
-              validator: (value) =>
-                      value == null || value.isEmpty ? 'Campo obrigatório' : null,
-            ),
-            SizedBox(height: 7.0),
-            ElevatedButton.icon(onPressed: _carregarImagem, icon: Icon(Icons.photo_library), label: Text('Selecionar imagem da galeria'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: AppColors.mainColor,
-                  padding: EdgeInsets.symmetric(horizontal: 16,vertical: 12),
-                  textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)
-                ),),
-                const SizedBox(height: 10,),
-                Wrap(
-                  spacing: 8,
-                  children: imagensSelecionadas.map((path){
-                    return Image.file(File(path),width: 80,height: 80,fit: BoxFit.cover,);
-                  }).toList(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: [
+              // Campo Nome do Produto
+              TextFormField(
+                controller: nomeController,
+                decoration: InputDecoration(
+                  labelText: 'Nome do Produto',
+                  border: OutlineInputBorder(),
+                  fillColor: Colors.white,
+                  filled: true,
                 ),
-            
-     ], ),
-    ),);
+                validator: (value) =>
+                        value == null || value.isEmpty ? 'Campo obrigatório' : null,
+              ),
+              SizedBox(height: 7.0),
+              
+              // Campo Descrição
+              TextFormField(
+                controller: descricaoController,
+                decoration: InputDecoration(
+                  labelText: 'Descrição',
+                  border: OutlineInputBorder(),
+                  fillColor: Colors.white,
+                  filled: true,
+                ),
+                validator: (value) =>
+                        value == null || value.isEmpty ? 'Campo obrigatório' : null,
+              ),
+              SizedBox(height: 7.0),
+              
+              // Campo Valor
+              TextFormField(
+                controller: valorController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Valor',
+                  border: OutlineInputBorder(),
+                  fillColor: Colors.white,
+                  filled: true,
+                ),
+                validator: (value) =>
+                        value == null || value.isEmpty ? 'Campo obrigatório' : null,
+              ),
+              SizedBox(height: 7.0),
+              ElevatedButton.icon(onPressed: _carregarImagem, icon: Icon(Icons.photo_library), label: Text('Selecionar imagem da galeria'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: AppColors.mainColor,
+                    padding: EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+                    textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)
+                  ),),
+                  const SizedBox(height: 10,),
+                  Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: imagensSelecionadas.map((path) {
+                        return Stack(
+                          children: [
+                            Image.file(
+                              File(path),
+                              width: 80,
+                              height: 80,
+                              fit: BoxFit.cover,
+                            ),
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    imagensSelecionadas.remove(path);
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.black54,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  padding: EdgeInsets.all(4),
+                                  child: Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                    size: 16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    )
+        
+              
+             ], ),
+            ),
+      ),);
   }
 }
