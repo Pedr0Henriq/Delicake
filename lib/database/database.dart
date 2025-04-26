@@ -109,6 +109,9 @@ Future<Confeitaria?> getConfeitariaById(int id) async {
   Future<int> insertProduto(ProdutosCompanion produto){
     return into(produtos).insert(produto);
   }
+  Future<void> removeProduto(int produtoId) async{
+  await (delete(produtos)..where((tbl) => tbl.id.equals(produtoId))).go(); 
+  }
 }
 
 LazyDatabase _openConnection() {

@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 class ArquiteturaProduto extends StatelessWidget {
   final Produto produto;
-  const ArquiteturaProduto({super.key, required this.produto});
+  final VoidCallback onRemover;
+  const ArquiteturaProduto({super.key, required this.produto, required this.onRemover});
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +61,7 @@ class ArquiteturaProduto extends StatelessWidget {
             ],
           ),
         ),
+        IconButton(onPressed: onRemover, icon: Icon(Icons.delete,))
       ],
     );
   }

@@ -94,8 +94,43 @@ if (result == true) {
   });
   }
 }
-  
 }
+
+
+void confirmarRemocao(int produtoId) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text('Remover Produto'),
+      content: Text('Tem certeza que deseja remover este produto?'),
+      actions: [
+        TextButton(
+          child: Text('Cancelar'),
+          onPressed: () => Navigator.pop(context),
+        ),
+        TextButton(
+          child: Text('Remover'),
+          onPressed: () async {
+            Navigator.pop(context);
+            await removerProduto(produtoId);
+          },
+        ),
+      ],
+    ),
+  );
+}
+
+Future<void> removerProduto(int produtoId) async {
+  await db.removeProduto(produtoId);
+  pegaProdutos();
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text('Produto removido com sucesso!'),
+      duration: Duration(seconds: 2),
+    ),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +260,7 @@ if (result == true) {
                   child: Column(
                     children: List.generate(produtos.length, (index){
                       return Padding(padding: const EdgeInsets.only(bottom: 8.0),
-                      child: ArquiteturaProduto(produto: produtos[index]),);
+                      child: ArquiteturaProduto(produto: produtos[index],onRemover: () => confirmarRemocao(produtos[index].id),),);
                     }),
                   ),
                 ),
