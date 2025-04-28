@@ -40,7 +40,13 @@ cd delicake
 flutter pub get
 ```
 
-3. **Execute o projeto**
+3. **Instale o drift**
+
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+
+4. **Execute o projeto**
 
 ```bash
 flutter run
