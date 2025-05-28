@@ -6,12 +6,13 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'dao/confeitarias_dao.dart';
+
 part 'database.g.dart';
 
-
-Future<void> deleteDatabase() async{
+Future<void> deleteDatabase() async {
   final dbFolder = await getApplicationDocumentsDirectory();
-  final file = File(p.join(dbFolder.path,'db.sqlite'));
+  final file = File(p.join(dbFolder.path, 'db.sqlite'));
   if (await file.exists()) {
     await file.delete();
     print('BD excluído');
@@ -51,35 +52,33 @@ class Produtos extends Table {
   TextColumn get descricao => text()();
   RealColumn get valor => real()();
   TextColumn get imagens => text().map(const JsonListConverter()).nullable()();
-  IntColumn get confeitariaId => integer().customConstraint(
-    'REFERENCES confeitarias(id) ON DELETE CASCADE')();
+  IntColumn get confeitariaId =>
+      integer().customConstraint(
+        'REFERENCES confeitarias(id) ON DELETE CASCADE',
+      )();
 }
 
-class JsonListConverter extends TypeConverter<List<String>,String>{
+class JsonListConverter extends TypeConverter<List<String>, String> {
   const JsonListConverter() : super();
-  
+
   @override
   List<String> fromSql(String fromDb) {
     final decoded = jsonDecode(fromDb);
     return List<String>.from(decoded);
   }
-  
+
   @override
   String toSql(List<String> value) {
     return jsonEncode(value);
   }
 }
 
-
-
-
-@DriftDatabase(tables: [Confeitarias, Produtos])
+@DriftDatabase(tables: [Confeitarias, Produtos], daos: [ConfeitariasDao])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
   int get schemaVersion => 1;
-
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -94,23 +93,28 @@ class AppDatabase extends _$AppDatabase {
       into(confeitarias).insert(entry);
 
   Future<void> updateConfeitaria(int id, ConfeitariasCompanion entry) {
-  return (update(confeitarias)..where((tbl) => tbl.id.equals(id))).write(entry);
-}
-
-Future<Confeitaria?> getConfeitariaById(int id) async {
-  final query = await (select(confeitarias)..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
-  return query;
-}
-
-
-  Future<List<Produto>> getProdutos(int confeitariaId){
-    return (select(produtos)..where((tbl)=>tbl.confeitariaId.equals(confeitariaId))).get();
+    return (update(confeitarias)
+      ..where((tbl) => tbl.id.equals(id))).write(entry);
   }
-  Future<int> insertProduto(ProdutosCompanion produto){
+
+  Future<Confeitaria?> getConfeitariaById(int id) async {
+    final query =
+        await (select(confeitarias)
+          ..where((tbl) => tbl.id.equals(id))).getSingleOrNull();
+    return query;
+  }
+
+  Future<List<Produto>> getProdutos(int confeitariaId) {
+    return (select(produtos)
+      ..where((tbl) => tbl.confeitariaId.equals(confeitariaId))).get();
+  }
+
+  Future<int> insertProduto(ProdutosCompanion produto) {
     return into(produtos).insert(produto);
   }
-  Future<void> removeProduto(int produtoId) async{
-  await (delete(produtos)..where((tbl) => tbl.id.equals(produtoId))).go(); 
+
+  Future<void> removeProduto(int produtoId) async {
+    await (delete(produtos)..where((tbl) => tbl.id.equals(produtoId))).go();
   }
 }
 
@@ -121,11 +125,10 @@ LazyDatabase _openConnection() {
       await deleteDatabase();
       await markDatabaseAsDeleted();
     } */
-    
+
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, 'db.sqlite'));
 
- 
     return NativeDatabase(file);
   });
 }
