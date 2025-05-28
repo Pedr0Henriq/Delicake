@@ -12,87 +12,136 @@ class $ConfeitariasTable extends Confeitarias
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   static const VerificationMeta _nomeMeta = const VerificationMeta('nome');
   @override
   late final GeneratedColumn<String> nome = GeneratedColumn<String>(
-      'nome', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _telefoneMeta =
-      const VerificationMeta('telefone');
+    'nome',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _telefoneMeta = const VerificationMeta(
+    'telefone',
+  );
   @override
   late final GeneratedColumn<String> telefone = GeneratedColumn<String>(
-      'telefone', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+    'telefone',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _ruaMeta = const VerificationMeta('rua');
   @override
   late final GeneratedColumn<String> rua = GeneratedColumn<String>(
-      'rua', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'rua',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _bairroMeta = const VerificationMeta('bairro');
   @override
   late final GeneratedColumn<String> bairro = GeneratedColumn<String>(
-      'bairro', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'bairro',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _cidadeMeta = const VerificationMeta('cidade');
   @override
   late final GeneratedColumn<String> cidade = GeneratedColumn<String>(
-      'cidade', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'cidade',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _estadoMeta = const VerificationMeta('estado');
   @override
   late final GeneratedColumn<String> estado = GeneratedColumn<String>(
-      'estado', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'estado',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _cepMeta = const VerificationMeta('cep');
   @override
   late final GeneratedColumn<String> cep = GeneratedColumn<String>(
-      'cep', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'cep',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _numeroMeta = const VerificationMeta('numero');
   @override
   late final GeneratedColumn<String> numero = GeneratedColumn<String>(
-      'numero', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _latitudeMeta =
-      const VerificationMeta('latitude');
+    'numero',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _latitudeMeta = const VerificationMeta(
+    'latitude',
+  );
   @override
   late final GeneratedColumn<double> latitude = GeneratedColumn<double>(
-      'latitude', aliasedName, false,
-      type: DriftSqlType.double, requiredDuringInsert: true);
-  static const VerificationMeta _longitudeMeta =
-      const VerificationMeta('longitude');
+    'latitude',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _longitudeMeta = const VerificationMeta(
+    'longitude',
+  );
   @override
   late final GeneratedColumn<double> longitude = GeneratedColumn<double>(
-      'longitude', aliasedName, false,
-      type: DriftSqlType.double, requiredDuringInsert: true);
+    'longitude',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [
-        id,
-        nome,
-        telefone,
-        rua,
-        bairro,
-        cidade,
-        estado,
-        cep,
-        numero,
-        latitude,
-        longitude
-      ];
+    id,
+    nome,
+    telefone,
+    rua,
+    bairro,
+    cidade,
+    estado,
+    cep,
+    numero,
+    latitude,
+    longitude,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'confeitarias';
   @override
-  VerificationContext validateIntegrity(Insertable<Confeitaria> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Confeitaria> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -100,59 +149,79 @@ class $ConfeitariasTable extends Confeitarias
     }
     if (data.containsKey('nome')) {
       context.handle(
-          _nomeMeta, nome.isAcceptableOrUnknown(data['nome']!, _nomeMeta));
+        _nomeMeta,
+        nome.isAcceptableOrUnknown(data['nome']!, _nomeMeta),
+      );
     } else if (isInserting) {
       context.missing(_nomeMeta);
     }
     if (data.containsKey('telefone')) {
-      context.handle(_telefoneMeta,
-          telefone.isAcceptableOrUnknown(data['telefone']!, _telefoneMeta));
+      context.handle(
+        _telefoneMeta,
+        telefone.isAcceptableOrUnknown(data['telefone']!, _telefoneMeta),
+      );
     }
     if (data.containsKey('rua')) {
       context.handle(
-          _ruaMeta, rua.isAcceptableOrUnknown(data['rua']!, _ruaMeta));
+        _ruaMeta,
+        rua.isAcceptableOrUnknown(data['rua']!, _ruaMeta),
+      );
     } else if (isInserting) {
       context.missing(_ruaMeta);
     }
     if (data.containsKey('bairro')) {
-      context.handle(_bairroMeta,
-          bairro.isAcceptableOrUnknown(data['bairro']!, _bairroMeta));
+      context.handle(
+        _bairroMeta,
+        bairro.isAcceptableOrUnknown(data['bairro']!, _bairroMeta),
+      );
     } else if (isInserting) {
       context.missing(_bairroMeta);
     }
     if (data.containsKey('cidade')) {
-      context.handle(_cidadeMeta,
-          cidade.isAcceptableOrUnknown(data['cidade']!, _cidadeMeta));
+      context.handle(
+        _cidadeMeta,
+        cidade.isAcceptableOrUnknown(data['cidade']!, _cidadeMeta),
+      );
     } else if (isInserting) {
       context.missing(_cidadeMeta);
     }
     if (data.containsKey('estado')) {
-      context.handle(_estadoMeta,
-          estado.isAcceptableOrUnknown(data['estado']!, _estadoMeta));
+      context.handle(
+        _estadoMeta,
+        estado.isAcceptableOrUnknown(data['estado']!, _estadoMeta),
+      );
     } else if (isInserting) {
       context.missing(_estadoMeta);
     }
     if (data.containsKey('cep')) {
       context.handle(
-          _cepMeta, cep.isAcceptableOrUnknown(data['cep']!, _cepMeta));
+        _cepMeta,
+        cep.isAcceptableOrUnknown(data['cep']!, _cepMeta),
+      );
     } else if (isInserting) {
       context.missing(_cepMeta);
     }
     if (data.containsKey('numero')) {
-      context.handle(_numeroMeta,
-          numero.isAcceptableOrUnknown(data['numero']!, _numeroMeta));
+      context.handle(
+        _numeroMeta,
+        numero.isAcceptableOrUnknown(data['numero']!, _numeroMeta),
+      );
     } else if (isInserting) {
       context.missing(_numeroMeta);
     }
     if (data.containsKey('latitude')) {
-      context.handle(_latitudeMeta,
-          latitude.isAcceptableOrUnknown(data['latitude']!, _latitudeMeta));
+      context.handle(
+        _latitudeMeta,
+        latitude.isAcceptableOrUnknown(data['latitude']!, _latitudeMeta),
+      );
     } else if (isInserting) {
       context.missing(_latitudeMeta);
     }
     if (data.containsKey('longitude')) {
-      context.handle(_longitudeMeta,
-          longitude.isAcceptableOrUnknown(data['longitude']!, _longitudeMeta));
+      context.handle(
+        _longitudeMeta,
+        longitude.isAcceptableOrUnknown(data['longitude']!, _longitudeMeta),
+      );
     } else if (isInserting) {
       context.missing(_longitudeMeta);
     }
@@ -165,28 +234,60 @@ class $ConfeitariasTable extends Confeitarias
   Confeitaria map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Confeitaria(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      nome: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}nome'])!,
-      telefone: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}telefone']),
-      rua: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}rua'])!,
-      bairro: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}bairro'])!,
-      cidade: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}cidade'])!,
-      estado: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}estado'])!,
-      cep: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}cep'])!,
-      numero: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}numero'])!,
-      latitude: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}latitude'])!,
-      longitude: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}longitude'])!,
+      id:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}id'],
+          )!,
+      nome:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}nome'],
+          )!,
+      telefone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}telefone'],
+      ),
+      rua:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}rua'],
+          )!,
+      bairro:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}bairro'],
+          )!,
+      cidade:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}cidade'],
+          )!,
+      estado:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}estado'],
+          )!,
+      cep:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}cep'],
+          )!,
+      numero:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}numero'],
+          )!,
+      latitude:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.double,
+            data['${effectivePrefix}latitude'],
+          )!,
+      longitude:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.double,
+            data['${effectivePrefix}longitude'],
+          )!,
     );
   }
 
@@ -208,18 +309,19 @@ class Confeitaria extends DataClass implements Insertable<Confeitaria> {
   final String numero;
   final double latitude;
   final double longitude;
-  const Confeitaria(
-      {required this.id,
-      required this.nome,
-      this.telefone,
-      required this.rua,
-      required this.bairro,
-      required this.cidade,
-      required this.estado,
-      required this.cep,
-      required this.numero,
-      required this.latitude,
-      required this.longitude});
+  const Confeitaria({
+    required this.id,
+    required this.nome,
+    this.telefone,
+    required this.rua,
+    required this.bairro,
+    required this.cidade,
+    required this.estado,
+    required this.cep,
+    required this.numero,
+    required this.latitude,
+    required this.longitude,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -243,9 +345,10 @@ class Confeitaria extends DataClass implements Insertable<Confeitaria> {
     return ConfeitariasCompanion(
       id: Value(id),
       nome: Value(nome),
-      telefone: telefone == null && nullToAbsent
-          ? const Value.absent()
-          : Value(telefone),
+      telefone:
+          telefone == null && nullToAbsent
+              ? const Value.absent()
+              : Value(telefone),
       rua: Value(rua),
       bairro: Value(bairro),
       cidade: Value(cidade),
@@ -257,8 +360,10 @@ class Confeitaria extends DataClass implements Insertable<Confeitaria> {
     );
   }
 
-  factory Confeitaria.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory Confeitaria.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Confeitaria(
       id: serializer.fromJson<int>(json['id']),
@@ -292,31 +397,31 @@ class Confeitaria extends DataClass implements Insertable<Confeitaria> {
     };
   }
 
-  Confeitaria copyWith(
-          {int? id,
-          String? nome,
-          Value<String?> telefone = const Value.absent(),
-          String? rua,
-          String? bairro,
-          String? cidade,
-          String? estado,
-          String? cep,
-          String? numero,
-          double? latitude,
-          double? longitude}) =>
-      Confeitaria(
-        id: id ?? this.id,
-        nome: nome ?? this.nome,
-        telefone: telefone.present ? telefone.value : this.telefone,
-        rua: rua ?? this.rua,
-        bairro: bairro ?? this.bairro,
-        cidade: cidade ?? this.cidade,
-        estado: estado ?? this.estado,
-        cep: cep ?? this.cep,
-        numero: numero ?? this.numero,
-        latitude: latitude ?? this.latitude,
-        longitude: longitude ?? this.longitude,
-      );
+  Confeitaria copyWith({
+    int? id,
+    String? nome,
+    Value<String?> telefone = const Value.absent(),
+    String? rua,
+    String? bairro,
+    String? cidade,
+    String? estado,
+    String? cep,
+    String? numero,
+    double? latitude,
+    double? longitude,
+  }) => Confeitaria(
+    id: id ?? this.id,
+    nome: nome ?? this.nome,
+    telefone: telefone.present ? telefone.value : this.telefone,
+    rua: rua ?? this.rua,
+    bairro: bairro ?? this.bairro,
+    cidade: cidade ?? this.cidade,
+    estado: estado ?? this.estado,
+    cep: cep ?? this.cep,
+    numero: numero ?? this.numero,
+    latitude: latitude ?? this.latitude,
+    longitude: longitude ?? this.longitude,
+  );
   Confeitaria copyWithCompanion(ConfeitariasCompanion data) {
     return Confeitaria(
       id: data.id.present ? data.id.value : this.id,
@@ -352,8 +457,19 @@ class Confeitaria extends DataClass implements Insertable<Confeitaria> {
   }
 
   @override
-  int get hashCode => Object.hash(id, nome, telefone, rua, bairro, cidade,
-      estado, cep, numero, latitude, longitude);
+  int get hashCode => Object.hash(
+    id,
+    nome,
+    telefone,
+    rua,
+    bairro,
+    cidade,
+    estado,
+    cep,
+    numero,
+    latitude,
+    longitude,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -408,15 +524,15 @@ class ConfeitariasCompanion extends UpdateCompanion<Confeitaria> {
     required String numero,
     required double latitude,
     required double longitude,
-  })  : nome = Value(nome),
-        rua = Value(rua),
-        bairro = Value(bairro),
-        cidade = Value(cidade),
-        estado = Value(estado),
-        cep = Value(cep),
-        numero = Value(numero),
-        latitude = Value(latitude),
-        longitude = Value(longitude);
+  }) : nome = Value(nome),
+       rua = Value(rua),
+       bairro = Value(bairro),
+       cidade = Value(cidade),
+       estado = Value(estado),
+       cep = Value(cep),
+       numero = Value(numero),
+       latitude = Value(latitude),
+       longitude = Value(longitude);
   static Insertable<Confeitaria> custom({
     Expression<int>? id,
     Expression<String>? nome,
@@ -445,18 +561,19 @@ class ConfeitariasCompanion extends UpdateCompanion<Confeitaria> {
     });
   }
 
-  ConfeitariasCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? nome,
-      Value<String?>? telefone,
-      Value<String>? rua,
-      Value<String>? bairro,
-      Value<String>? cidade,
-      Value<String>? estado,
-      Value<String>? cep,
-      Value<String>? numero,
-      Value<double>? latitude,
-      Value<double>? longitude}) {
+  ConfeitariasCompanion copyWith({
+    Value<int>? id,
+    Value<String>? nome,
+    Value<String?>? telefone,
+    Value<String>? rua,
+    Value<String>? bairro,
+    Value<String>? cidade,
+    Value<String>? estado,
+    Value<String>? cep,
+    Value<String>? numero,
+    Value<double>? latitude,
+    Value<double>? longitude,
+  }) {
     return ConfeitariasCompanion(
       id: id ?? this.id,
       nome: nome ?? this.nome,
@@ -538,55 +655,89 @@ class $ProdutosTable extends Produtos with TableInfo<$ProdutosTable, Produto> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
   static const VerificationMeta _nomeMeta = const VerificationMeta('nome');
   @override
   late final GeneratedColumn<String> nome = GeneratedColumn<String>(
-      'nome', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 50),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
-  static const VerificationMeta _descricaoMeta =
-      const VerificationMeta('descricao');
+    'nome',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 1,
+      maxTextLength: 50,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descricaoMeta = const VerificationMeta(
+    'descricao',
+  );
   @override
   late final GeneratedColumn<String> descricao = GeneratedColumn<String>(
-      'descricao', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'descricao',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _valorMeta = const VerificationMeta('valor');
   @override
   late final GeneratedColumn<double> valor = GeneratedColumn<double>(
-      'valor', aliasedName, false,
-      type: DriftSqlType.double, requiredDuringInsert: true);
+    'valor',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
   @override
   late final GeneratedColumnWithTypeConverter<List<String>?, String> imagens =
-      GeneratedColumn<String>('imagens', aliasedName, true,
-              type: DriftSqlType.string, requiredDuringInsert: false)
-          .withConverter<List<String>?>($ProdutosTable.$converterimagensn);
-  static const VerificationMeta _confeitariaIdMeta =
-      const VerificationMeta('confeitariaId');
+      GeneratedColumn<String>(
+        'imagens',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<List<String>?>($ProdutosTable.$converterimagensn);
+  static const VerificationMeta _confeitariaIdMeta = const VerificationMeta(
+    'confeitariaId',
+  );
   @override
   late final GeneratedColumn<int> confeitariaId = GeneratedColumn<int>(
-      'confeitaria_id', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: true,
-      $customConstraints: 'REFERENCES confeitarias(id) ON DELETE CASCADE');
+    'confeitaria_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'REFERENCES confeitarias(id) ON DELETE CASCADE',
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, nome, descricao, valor, imagens, confeitariaId];
+  List<GeneratedColumn> get $columns => [
+    id,
+    nome,
+    descricao,
+    valor,
+    imagens,
+    confeitariaId,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'produtos';
   @override
-  VerificationContext validateIntegrity(Insertable<Produto> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Produto> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -594,27 +745,36 @@ class $ProdutosTable extends Produtos with TableInfo<$ProdutosTable, Produto> {
     }
     if (data.containsKey('nome')) {
       context.handle(
-          _nomeMeta, nome.isAcceptableOrUnknown(data['nome']!, _nomeMeta));
+        _nomeMeta,
+        nome.isAcceptableOrUnknown(data['nome']!, _nomeMeta),
+      );
     } else if (isInserting) {
       context.missing(_nomeMeta);
     }
     if (data.containsKey('descricao')) {
-      context.handle(_descricaoMeta,
-          descricao.isAcceptableOrUnknown(data['descricao']!, _descricaoMeta));
+      context.handle(
+        _descricaoMeta,
+        descricao.isAcceptableOrUnknown(data['descricao']!, _descricaoMeta),
+      );
     } else if (isInserting) {
       context.missing(_descricaoMeta);
     }
     if (data.containsKey('valor')) {
       context.handle(
-          _valorMeta, valor.isAcceptableOrUnknown(data['valor']!, _valorMeta));
+        _valorMeta,
+        valor.isAcceptableOrUnknown(data['valor']!, _valorMeta),
+      );
     } else if (isInserting) {
       context.missing(_valorMeta);
     }
     if (data.containsKey('confeitaria_id')) {
       context.handle(
+        _confeitariaIdMeta,
+        confeitariaId.isAcceptableOrUnknown(
+          data['confeitaria_id']!,
           _confeitariaIdMeta,
-          confeitariaId.isAcceptableOrUnknown(
-              data['confeitaria_id']!, _confeitariaIdMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_confeitariaIdMeta);
     }
@@ -627,19 +787,37 @@ class $ProdutosTable extends Produtos with TableInfo<$ProdutosTable, Produto> {
   Produto map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Produto(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      nome: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}nome'])!,
-      descricao: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}descricao'])!,
-      valor: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}valor'])!,
-      imagens: $ProdutosTable.$converterimagensn.fromSql(attachedDatabase
-          .typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}imagens'])),
-      confeitariaId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}confeitaria_id'])!,
+      id:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}id'],
+          )!,
+      nome:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}nome'],
+          )!,
+      descricao:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}descricao'],
+          )!,
+      valor:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.double,
+            data['${effectivePrefix}valor'],
+          )!,
+      imagens: $ProdutosTable.$converterimagensn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}imagens'],
+        ),
+      ),
+      confeitariaId:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}confeitaria_id'],
+          )!,
     );
   }
 
@@ -661,13 +839,14 @@ class Produto extends DataClass implements Insertable<Produto> {
   final double valor;
   final List<String>? imagens;
   final int confeitariaId;
-  const Produto(
-      {required this.id,
-      required this.nome,
-      required this.descricao,
-      required this.valor,
-      this.imagens,
-      required this.confeitariaId});
+  const Produto({
+    required this.id,
+    required this.nome,
+    required this.descricao,
+    required this.valor,
+    this.imagens,
+    required this.confeitariaId,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -676,8 +855,9 @@ class Produto extends DataClass implements Insertable<Produto> {
     map['descricao'] = Variable<String>(descricao);
     map['valor'] = Variable<double>(valor);
     if (!nullToAbsent || imagens != null) {
-      map['imagens'] =
-          Variable<String>($ProdutosTable.$converterimagensn.toSql(imagens));
+      map['imagens'] = Variable<String>(
+        $ProdutosTable.$converterimagensn.toSql(imagens),
+      );
     }
     map['confeitaria_id'] = Variable<int>(confeitariaId);
     return map;
@@ -689,15 +869,18 @@ class Produto extends DataClass implements Insertable<Produto> {
       nome: Value(nome),
       descricao: Value(descricao),
       valor: Value(valor),
-      imagens: imagens == null && nullToAbsent
-          ? const Value.absent()
-          : Value(imagens),
+      imagens:
+          imagens == null && nullToAbsent
+              ? const Value.absent()
+              : Value(imagens),
       confeitariaId: Value(confeitariaId),
     );
   }
 
-  factory Produto.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory Produto.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Produto(
       id: serializer.fromJson<int>(json['id']),
@@ -721,21 +904,21 @@ class Produto extends DataClass implements Insertable<Produto> {
     };
   }
 
-  Produto copyWith(
-          {int? id,
-          String? nome,
-          String? descricao,
-          double? valor,
-          Value<List<String>?> imagens = const Value.absent(),
-          int? confeitariaId}) =>
-      Produto(
-        id: id ?? this.id,
-        nome: nome ?? this.nome,
-        descricao: descricao ?? this.descricao,
-        valor: valor ?? this.valor,
-        imagens: imagens.present ? imagens.value : this.imagens,
-        confeitariaId: confeitariaId ?? this.confeitariaId,
-      );
+  Produto copyWith({
+    int? id,
+    String? nome,
+    String? descricao,
+    double? valor,
+    Value<List<String>?> imagens = const Value.absent(),
+    int? confeitariaId,
+  }) => Produto(
+    id: id ?? this.id,
+    nome: nome ?? this.nome,
+    descricao: descricao ?? this.descricao,
+    valor: valor ?? this.valor,
+    imagens: imagens.present ? imagens.value : this.imagens,
+    confeitariaId: confeitariaId ?? this.confeitariaId,
+  );
   Produto copyWithCompanion(ProdutosCompanion data) {
     return Produto(
       id: data.id.present ? data.id.value : this.id,
@@ -743,9 +926,10 @@ class Produto extends DataClass implements Insertable<Produto> {
       descricao: data.descricao.present ? data.descricao.value : this.descricao,
       valor: data.valor.present ? data.valor.value : this.valor,
       imagens: data.imagens.present ? data.imagens.value : this.imagens,
-      confeitariaId: data.confeitariaId.present
-          ? data.confeitariaId.value
-          : this.confeitariaId,
+      confeitariaId:
+          data.confeitariaId.present
+              ? data.confeitariaId.value
+              : this.confeitariaId,
     );
   }
 
@@ -799,10 +983,10 @@ class ProdutosCompanion extends UpdateCompanion<Produto> {
     required double valor,
     this.imagens = const Value.absent(),
     required int confeitariaId,
-  })  : nome = Value(nome),
-        descricao = Value(descricao),
-        valor = Value(valor),
-        confeitariaId = Value(confeitariaId);
+  }) : nome = Value(nome),
+       descricao = Value(descricao),
+       valor = Value(valor),
+       confeitariaId = Value(confeitariaId);
   static Insertable<Produto> custom({
     Expression<int>? id,
     Expression<String>? nome,
@@ -821,13 +1005,14 @@ class ProdutosCompanion extends UpdateCompanion<Produto> {
     });
   }
 
-  ProdutosCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? nome,
-      Value<String>? descricao,
-      Value<double>? valor,
-      Value<List<String>?>? imagens,
-      Value<int>? confeitariaId}) {
+  ProdutosCompanion copyWith({
+    Value<int>? id,
+    Value<String>? nome,
+    Value<String>? descricao,
+    Value<double>? valor,
+    Value<List<String>?>? imagens,
+    Value<int>? confeitariaId,
+  }) {
     return ProdutosCompanion(
       id: id ?? this.id,
       nome: nome ?? this.nome,
@@ -855,7 +1040,8 @@ class ProdutosCompanion extends UpdateCompanion<Produto> {
     }
     if (imagens.present) {
       map['imagens'] = Variable<String>(
-          $ProdutosTable.$converterimagensn.toSql(imagens.value));
+        $ProdutosTable.$converterimagensn.toSql(imagens.value),
+      );
     }
     if (confeitariaId.present) {
       map['confeitaria_id'] = Variable<int>(confeitariaId.value);
@@ -882,71 +1068,79 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $ConfeitariasTable confeitarias = $ConfeitariasTable(this);
   late final $ProdutosTable produtos = $ProdutosTable(this);
+  late final ConfeitariasDao confeitariasDao = ConfeitariasDao(
+    this as AppDatabase,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [confeitarias, produtos];
   @override
-  StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules(
-        [
-          WritePropagation(
-            on: TableUpdateQuery.onTableName('confeitarias',
-                limitUpdateKind: UpdateKind.delete),
-            result: [
-              TableUpdate('produtos', kind: UpdateKind.delete),
-            ],
-          ),
-        ],
-      );
+  StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'confeitarias',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('produtos', kind: UpdateKind.delete)],
+    ),
+  ]);
 }
 
-typedef $$ConfeitariasTableCreateCompanionBuilder = ConfeitariasCompanion
-    Function({
-  Value<int> id,
-  required String nome,
-  Value<String?> telefone,
-  required String rua,
-  required String bairro,
-  required String cidade,
-  required String estado,
-  required String cep,
-  required String numero,
-  required double latitude,
-  required double longitude,
-});
-typedef $$ConfeitariasTableUpdateCompanionBuilder = ConfeitariasCompanion
-    Function({
-  Value<int> id,
-  Value<String> nome,
-  Value<String?> telefone,
-  Value<String> rua,
-  Value<String> bairro,
-  Value<String> cidade,
-  Value<String> estado,
-  Value<String> cep,
-  Value<String> numero,
-  Value<double> latitude,
-  Value<double> longitude,
-});
+typedef $$ConfeitariasTableCreateCompanionBuilder =
+    ConfeitariasCompanion Function({
+      Value<int> id,
+      required String nome,
+      Value<String?> telefone,
+      required String rua,
+      required String bairro,
+      required String cidade,
+      required String estado,
+      required String cep,
+      required String numero,
+      required double latitude,
+      required double longitude,
+    });
+typedef $$ConfeitariasTableUpdateCompanionBuilder =
+    ConfeitariasCompanion Function({
+      Value<int> id,
+      Value<String> nome,
+      Value<String?> telefone,
+      Value<String> rua,
+      Value<String> bairro,
+      Value<String> cidade,
+      Value<String> estado,
+      Value<String> cep,
+      Value<String> numero,
+      Value<double> latitude,
+      Value<double> longitude,
+    });
 
 final class $$ConfeitariasTableReferences
     extends BaseReferences<_$AppDatabase, $ConfeitariasTable, Confeitaria> {
   $$ConfeitariasTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static MultiTypedResultKey<$ProdutosTable, List<Produto>> _produtosRefsTable(
-          _$AppDatabase db) =>
-      MultiTypedResultKey.fromTable(db.produtos,
-          aliasName: $_aliasNameGenerator(
-              db.confeitarias.id, db.produtos.confeitariaId));
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.produtos,
+    aliasName: $_aliasNameGenerator(
+      db.confeitarias.id,
+      db.produtos.confeitariaId,
+    ),
+  );
 
   $$ProdutosTableProcessedTableManager get produtosRefs {
-    final manager = $$ProdutosTableTableManager($_db, $_db.produtos)
-        .filter((f) => f.confeitariaId.id.sqlEquals($_itemColumn<int>('id')!));
+    final manager = $$ProdutosTableTableManager(
+      $_db,
+      $_db.produtos,
+    ).filter((f) => f.confeitariaId.id.sqlEquals($_itemColumn<int>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_produtosRefsTable($_db));
     return ProcessedTableManager(
-        manager.$state.copyWith(prefetchedData: cache));
+      manager.$state.copyWith(prefetchedData: cache),
+    );
   }
 }
 
@@ -960,56 +1154,82 @@ class $$ConfeitariasTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get nome => $composableBuilder(
-      column: $table.nome, builder: (column) => ColumnFilters(column));
+    column: $table.nome,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get telefone => $composableBuilder(
-      column: $table.telefone, builder: (column) => ColumnFilters(column));
+    column: $table.telefone,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get rua => $composableBuilder(
-      column: $table.rua, builder: (column) => ColumnFilters(column));
+    column: $table.rua,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get bairro => $composableBuilder(
-      column: $table.bairro, builder: (column) => ColumnFilters(column));
+    column: $table.bairro,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get cidade => $composableBuilder(
-      column: $table.cidade, builder: (column) => ColumnFilters(column));
+    column: $table.cidade,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get estado => $composableBuilder(
-      column: $table.estado, builder: (column) => ColumnFilters(column));
+    column: $table.estado,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get cep => $composableBuilder(
-      column: $table.cep, builder: (column) => ColumnFilters(column));
+    column: $table.cep,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get numero => $composableBuilder(
-      column: $table.numero, builder: (column) => ColumnFilters(column));
+    column: $table.numero,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<double> get latitude => $composableBuilder(
-      column: $table.latitude, builder: (column) => ColumnFilters(column));
+    column: $table.latitude,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<double> get longitude => $composableBuilder(
-      column: $table.longitude, builder: (column) => ColumnFilters(column));
+    column: $table.longitude,
+    builder: (column) => ColumnFilters(column),
+  );
 
   Expression<bool> produtosRefs(
-      Expression<bool> Function($$ProdutosTableFilterComposer f) f) {
+    Expression<bool> Function($$ProdutosTableFilterComposer f) f,
+  ) {
     final $$ProdutosTableFilterComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.id,
-        referencedTable: $db.produtos,
-        getReferencedColumn: (t) => t.confeitariaId,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$ProdutosTableFilterComposer(
-              $db: $db,
-              $table: $db.produtos,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.produtos,
+      getReferencedColumn: (t) => t.confeitariaId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProdutosTableFilterComposer(
+            $db: $db,
+            $table: $db.produtos,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return f(composer);
   }
 }
@@ -1024,37 +1244,59 @@ class $$ConfeitariasTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get nome => $composableBuilder(
-      column: $table.nome, builder: (column) => ColumnOrderings(column));
+    column: $table.nome,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get telefone => $composableBuilder(
-      column: $table.telefone, builder: (column) => ColumnOrderings(column));
+    column: $table.telefone,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get rua => $composableBuilder(
-      column: $table.rua, builder: (column) => ColumnOrderings(column));
+    column: $table.rua,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get bairro => $composableBuilder(
-      column: $table.bairro, builder: (column) => ColumnOrderings(column));
+    column: $table.bairro,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get cidade => $composableBuilder(
-      column: $table.cidade, builder: (column) => ColumnOrderings(column));
+    column: $table.cidade,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get estado => $composableBuilder(
-      column: $table.estado, builder: (column) => ColumnOrderings(column));
+    column: $table.estado,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get cep => $composableBuilder(
-      column: $table.cep, builder: (column) => ColumnOrderings(column));
+    column: $table.cep,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get numero => $composableBuilder(
-      column: $table.numero, builder: (column) => ColumnOrderings(column));
+    column: $table.numero,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<double> get latitude => $composableBuilder(
-      column: $table.latitude, builder: (column) => ColumnOrderings(column));
+    column: $table.latitude,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<double> get longitude => $composableBuilder(
-      column: $table.longitude, builder: (column) => ColumnOrderings(column));
+    column: $table.longitude,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ConfeitariasTableAnnotationComposer
@@ -1100,107 +1342,120 @@ class $$ConfeitariasTableAnnotationComposer
       $composableBuilder(column: $table.longitude, builder: (column) => column);
 
   Expression<T> produtosRefs<T extends Object>(
-      Expression<T> Function($$ProdutosTableAnnotationComposer a) f) {
+    Expression<T> Function($$ProdutosTableAnnotationComposer a) f,
+  ) {
     final $$ProdutosTableAnnotationComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.id,
-        referencedTable: $db.produtos,
-        getReferencedColumn: (t) => t.confeitariaId,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$ProdutosTableAnnotationComposer(
-              $db: $db,
-              $table: $db.produtos,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.produtos,
+      getReferencedColumn: (t) => t.confeitariaId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProdutosTableAnnotationComposer(
+            $db: $db,
+            $table: $db.produtos,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return f(composer);
   }
 }
 
-class $$ConfeitariasTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $ConfeitariasTable,
-    Confeitaria,
-    $$ConfeitariasTableFilterComposer,
-    $$ConfeitariasTableOrderingComposer,
-    $$ConfeitariasTableAnnotationComposer,
-    $$ConfeitariasTableCreateCompanionBuilder,
-    $$ConfeitariasTableUpdateCompanionBuilder,
-    (Confeitaria, $$ConfeitariasTableReferences),
-    Confeitaria,
-    PrefetchHooks Function({bool produtosRefs})> {
+class $$ConfeitariasTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ConfeitariasTable,
+          Confeitaria,
+          $$ConfeitariasTableFilterComposer,
+          $$ConfeitariasTableOrderingComposer,
+          $$ConfeitariasTableAnnotationComposer,
+          $$ConfeitariasTableCreateCompanionBuilder,
+          $$ConfeitariasTableUpdateCompanionBuilder,
+          (Confeitaria, $$ConfeitariasTableReferences),
+          Confeitaria,
+          PrefetchHooks Function({bool produtosRefs})
+        > {
   $$ConfeitariasTableTableManager(_$AppDatabase db, $ConfeitariasTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () =>
-              $$ConfeitariasTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$ConfeitariasTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$ConfeitariasTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> nome = const Value.absent(),
-            Value<String?> telefone = const Value.absent(),
-            Value<String> rua = const Value.absent(),
-            Value<String> bairro = const Value.absent(),
-            Value<String> cidade = const Value.absent(),
-            Value<String> estado = const Value.absent(),
-            Value<String> cep = const Value.absent(),
-            Value<String> numero = const Value.absent(),
-            Value<double> latitude = const Value.absent(),
-            Value<double> longitude = const Value.absent(),
-          }) =>
-              ConfeitariasCompanion(
-            id: id,
-            nome: nome,
-            telefone: telefone,
-            rua: rua,
-            bairro: bairro,
-            cidade: cidade,
-            estado: estado,
-            cep: cep,
-            numero: numero,
-            latitude: latitude,
-            longitude: longitude,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String nome,
-            Value<String?> telefone = const Value.absent(),
-            required String rua,
-            required String bairro,
-            required String cidade,
-            required String estado,
-            required String cep,
-            required String numero,
-            required double latitude,
-            required double longitude,
-          }) =>
-              ConfeitariasCompanion.insert(
-            id: id,
-            nome: nome,
-            telefone: telefone,
-            rua: rua,
-            bairro: bairro,
-            cidade: cidade,
-            estado: estado,
-            cep: cep,
-            numero: numero,
-            latitude: latitude,
-            longitude: longitude,
-          ),
-          withReferenceMapper: (p0) => p0
-              .map((e) => (
-                    e.readTable(table),
-                    $$ConfeitariasTableReferences(db, table, e)
-                  ))
-              .toList(),
+          createFilteringComposer:
+              () => $$ConfeitariasTableFilterComposer($db: db, $table: table),
+          createOrderingComposer:
+              () => $$ConfeitariasTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer:
+              () =>
+                  $$ConfeitariasTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> nome = const Value.absent(),
+                Value<String?> telefone = const Value.absent(),
+                Value<String> rua = const Value.absent(),
+                Value<String> bairro = const Value.absent(),
+                Value<String> cidade = const Value.absent(),
+                Value<String> estado = const Value.absent(),
+                Value<String> cep = const Value.absent(),
+                Value<String> numero = const Value.absent(),
+                Value<double> latitude = const Value.absent(),
+                Value<double> longitude = const Value.absent(),
+              }) => ConfeitariasCompanion(
+                id: id,
+                nome: nome,
+                telefone: telefone,
+                rua: rua,
+                bairro: bairro,
+                cidade: cidade,
+                estado: estado,
+                cep: cep,
+                numero: numero,
+                latitude: latitude,
+                longitude: longitude,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String nome,
+                Value<String?> telefone = const Value.absent(),
+                required String rua,
+                required String bairro,
+                required String cidade,
+                required String estado,
+                required String cep,
+                required String numero,
+                required double latitude,
+                required double longitude,
+              }) => ConfeitariasCompanion.insert(
+                id: id,
+                nome: nome,
+                telefone: telefone,
+                rua: rua,
+                bairro: bairro,
+                cidade: cidade,
+                estado: estado,
+                cep: cep,
+                numero: numero,
+                latitude: latitude,
+                longitude: longitude,
+              ),
+          withReferenceMapper:
+              (p0) =>
+                  p0
+                      .map(
+                        (e) => (
+                          e.readTable(table),
+                          $$ConfeitariasTableReferences(db, table, e),
+                        ),
+                      )
+                      .toList(),
           prefetchHooksCallback: ({produtosRefs = false}) {
             return PrefetchHooks(
               db: db,
@@ -1209,53 +1464,67 @@ class $$ConfeitariasTableTableManager extends RootTableManager<
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (produtosRefs)
-                    await $_getPrefetchedData<Confeitaria, $ConfeitariasTable,
-                            Produto>(
-                        currentTable: table,
-                        referencedTable: $$ConfeitariasTableReferences
-                            ._produtosRefsTable(db),
-                        managerFromTypedResult: (p0) =>
-                            $$ConfeitariasTableReferences(db, table, p0)
-                                .produtosRefs,
-                        referencedItemsForCurrentItem:
-                            (item, referencedItems) => referencedItems
-                                .where((e) => e.confeitariaId == item.id),
-                        typedResults: items)
+                    await $_getPrefetchedData<
+                      Confeitaria,
+                      $ConfeitariasTable,
+                      Produto
+                    >(
+                      currentTable: table,
+                      referencedTable: $$ConfeitariasTableReferences
+                          ._produtosRefsTable(db),
+                      managerFromTypedResult:
+                          (p0) =>
+                              $$ConfeitariasTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).produtosRefs,
+                      referencedItemsForCurrentItem:
+                          (item, referencedItems) => referencedItems.where(
+                            (e) => e.confeitariaId == item.id,
+                          ),
+                      typedResults: items,
+                    ),
                 ];
               },
             );
           },
-        ));
+        ),
+      );
 }
 
-typedef $$ConfeitariasTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $ConfeitariasTable,
-    Confeitaria,
-    $$ConfeitariasTableFilterComposer,
-    $$ConfeitariasTableOrderingComposer,
-    $$ConfeitariasTableAnnotationComposer,
-    $$ConfeitariasTableCreateCompanionBuilder,
-    $$ConfeitariasTableUpdateCompanionBuilder,
-    (Confeitaria, $$ConfeitariasTableReferences),
-    Confeitaria,
-    PrefetchHooks Function({bool produtosRefs})>;
-typedef $$ProdutosTableCreateCompanionBuilder = ProdutosCompanion Function({
-  Value<int> id,
-  required String nome,
-  required String descricao,
-  required double valor,
-  Value<List<String>?> imagens,
-  required int confeitariaId,
-});
-typedef $$ProdutosTableUpdateCompanionBuilder = ProdutosCompanion Function({
-  Value<int> id,
-  Value<String> nome,
-  Value<String> descricao,
-  Value<double> valor,
-  Value<List<String>?> imagens,
-  Value<int> confeitariaId,
-});
+typedef $$ConfeitariasTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ConfeitariasTable,
+      Confeitaria,
+      $$ConfeitariasTableFilterComposer,
+      $$ConfeitariasTableOrderingComposer,
+      $$ConfeitariasTableAnnotationComposer,
+      $$ConfeitariasTableCreateCompanionBuilder,
+      $$ConfeitariasTableUpdateCompanionBuilder,
+      (Confeitaria, $$ConfeitariasTableReferences),
+      Confeitaria,
+      PrefetchHooks Function({bool produtosRefs})
+    >;
+typedef $$ProdutosTableCreateCompanionBuilder =
+    ProdutosCompanion Function({
+      Value<int> id,
+      required String nome,
+      required String descricao,
+      required double valor,
+      Value<List<String>?> imagens,
+      required int confeitariaId,
+    });
+typedef $$ProdutosTableUpdateCompanionBuilder =
+    ProdutosCompanion Function({
+      Value<int> id,
+      Value<String> nome,
+      Value<String> descricao,
+      Value<double> valor,
+      Value<List<String>?> imagens,
+      Value<int> confeitariaId,
+    });
 
 final class $$ProdutosTableReferences
     extends BaseReferences<_$AppDatabase, $ProdutosTable, Produto> {
@@ -1263,17 +1532,21 @@ final class $$ProdutosTableReferences
 
   static $ConfeitariasTable _confeitariaIdTable(_$AppDatabase db) =>
       db.confeitarias.createAlias(
-          $_aliasNameGenerator(db.produtos.confeitariaId, db.confeitarias.id));
+        $_aliasNameGenerator(db.produtos.confeitariaId, db.confeitarias.id),
+      );
 
   $$ConfeitariasTableProcessedTableManager get confeitariaId {
     final $_column = $_itemColumn<int>('confeitaria_id')!;
 
-    final manager = $$ConfeitariasTableTableManager($_db, $_db.confeitarias)
-        .filter((f) => f.id.sqlEquals($_column));
+    final manager = $$ConfeitariasTableTableManager(
+      $_db,
+      $_db.confeitarias,
+    ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_confeitariaIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
-        manager.$state.copyWith(prefetchedData: [item]));
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
   }
 }
 
@@ -1287,39 +1560,51 @@ class $$ProdutosTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get nome => $composableBuilder(
-      column: $table.nome, builder: (column) => ColumnFilters(column));
+    column: $table.nome,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get descricao => $composableBuilder(
-      column: $table.descricao, builder: (column) => ColumnFilters(column));
+    column: $table.descricao,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<double> get valor => $composableBuilder(
-      column: $table.valor, builder: (column) => ColumnFilters(column));
+    column: $table.valor,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnWithTypeConverterFilters<List<String>?, List<String>, String>
-      get imagens => $composableBuilder(
-          column: $table.imagens,
-          builder: (column) => ColumnWithTypeConverterFilters(column));
+  get imagens => $composableBuilder(
+    column: $table.imagens,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
 
   $$ConfeitariasTableFilterComposer get confeitariaId {
     final $$ConfeitariasTableFilterComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.confeitariaId,
-        referencedTable: $db.confeitarias,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$ConfeitariasTableFilterComposer(
-              $db: $db,
-              $table: $db.confeitarias,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.confeitariaId,
+      referencedTable: $db.confeitarias,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ConfeitariasTableFilterComposer(
+            $db: $db,
+            $table: $db.confeitarias,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return composer;
   }
 }
@@ -1334,37 +1619,50 @@ class $$ProdutosTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get nome => $composableBuilder(
-      column: $table.nome, builder: (column) => ColumnOrderings(column));
+    column: $table.nome,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get descricao => $composableBuilder(
-      column: $table.descricao, builder: (column) => ColumnOrderings(column));
+    column: $table.descricao,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<double> get valor => $composableBuilder(
-      column: $table.valor, builder: (column) => ColumnOrderings(column));
+    column: $table.valor,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get imagens => $composableBuilder(
-      column: $table.imagens, builder: (column) => ColumnOrderings(column));
+    column: $table.imagens,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   $$ConfeitariasTableOrderingComposer get confeitariaId {
     final $$ConfeitariasTableOrderingComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.confeitariaId,
-        referencedTable: $db.confeitarias,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$ConfeitariasTableOrderingComposer(
-              $db: $db,
-              $table: $db.confeitarias,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.confeitariaId,
+      referencedTable: $db.confeitarias,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ConfeitariasTableOrderingComposer(
+            $db: $db,
+            $table: $db.confeitarias,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return composer;
   }
 }
@@ -1395,109 +1693,128 @@ class $$ProdutosTableAnnotationComposer
 
   $$ConfeitariasTableAnnotationComposer get confeitariaId {
     final $$ConfeitariasTableAnnotationComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.confeitariaId,
-        referencedTable: $db.confeitarias,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$ConfeitariasTableAnnotationComposer(
-              $db: $db,
-              $table: $db.confeitarias,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.confeitariaId,
+      referencedTable: $db.confeitarias,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ConfeitariasTableAnnotationComposer(
+            $db: $db,
+            $table: $db.confeitarias,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return composer;
   }
 }
 
-class $$ProdutosTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $ProdutosTable,
-    Produto,
-    $$ProdutosTableFilterComposer,
-    $$ProdutosTableOrderingComposer,
-    $$ProdutosTableAnnotationComposer,
-    $$ProdutosTableCreateCompanionBuilder,
-    $$ProdutosTableUpdateCompanionBuilder,
-    (Produto, $$ProdutosTableReferences),
-    Produto,
-    PrefetchHooks Function({bool confeitariaId})> {
+class $$ProdutosTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ProdutosTable,
+          Produto,
+          $$ProdutosTableFilterComposer,
+          $$ProdutosTableOrderingComposer,
+          $$ProdutosTableAnnotationComposer,
+          $$ProdutosTableCreateCompanionBuilder,
+          $$ProdutosTableUpdateCompanionBuilder,
+          (Produto, $$ProdutosTableReferences),
+          Produto,
+          PrefetchHooks Function({bool confeitariaId})
+        > {
   $$ProdutosTableTableManager(_$AppDatabase db, $ProdutosTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () =>
-              $$ProdutosTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$ProdutosTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$ProdutosTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> nome = const Value.absent(),
-            Value<String> descricao = const Value.absent(),
-            Value<double> valor = const Value.absent(),
-            Value<List<String>?> imagens = const Value.absent(),
-            Value<int> confeitariaId = const Value.absent(),
-          }) =>
-              ProdutosCompanion(
-            id: id,
-            nome: nome,
-            descricao: descricao,
-            valor: valor,
-            imagens: imagens,
-            confeitariaId: confeitariaId,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String nome,
-            required String descricao,
-            required double valor,
-            Value<List<String>?> imagens = const Value.absent(),
-            required int confeitariaId,
-          }) =>
-              ProdutosCompanion.insert(
-            id: id,
-            nome: nome,
-            descricao: descricao,
-            valor: valor,
-            imagens: imagens,
-            confeitariaId: confeitariaId,
-          ),
-          withReferenceMapper: (p0) => p0
-              .map((e) =>
-                  (e.readTable(table), $$ProdutosTableReferences(db, table, e)))
-              .toList(),
+          createFilteringComposer:
+              () => $$ProdutosTableFilterComposer($db: db, $table: table),
+          createOrderingComposer:
+              () => $$ProdutosTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer:
+              () => $$ProdutosTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> nome = const Value.absent(),
+                Value<String> descricao = const Value.absent(),
+                Value<double> valor = const Value.absent(),
+                Value<List<String>?> imagens = const Value.absent(),
+                Value<int> confeitariaId = const Value.absent(),
+              }) => ProdutosCompanion(
+                id: id,
+                nome: nome,
+                descricao: descricao,
+                valor: valor,
+                imagens: imagens,
+                confeitariaId: confeitariaId,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String nome,
+                required String descricao,
+                required double valor,
+                Value<List<String>?> imagens = const Value.absent(),
+                required int confeitariaId,
+              }) => ProdutosCompanion.insert(
+                id: id,
+                nome: nome,
+                descricao: descricao,
+                valor: valor,
+                imagens: imagens,
+                confeitariaId: confeitariaId,
+              ),
+          withReferenceMapper:
+              (p0) =>
+                  p0
+                      .map(
+                        (e) => (
+                          e.readTable(table),
+                          $$ProdutosTableReferences(db, table, e),
+                        ),
+                      )
+                      .toList(),
           prefetchHooksCallback: ({confeitariaId = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
               addJoins: <
-                  T extends TableManagerState<
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic>>(state) {
+                T extends TableManagerState<
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic,
+                  dynamic
+                >
+              >(state) {
                 if (confeitariaId) {
-                  state = state.withJoin(
-                    currentTable: table,
-                    currentColumn: table.confeitariaId,
-                    referencedTable:
-                        $$ProdutosTableReferences._confeitariaIdTable(db),
-                    referencedColumn:
-                        $$ProdutosTableReferences._confeitariaIdTable(db).id,
-                  ) as T;
+                  state =
+                      state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.confeitariaId,
+                            referencedTable: $$ProdutosTableReferences
+                                ._confeitariaIdTable(db),
+                            referencedColumn:
+                                $$ProdutosTableReferences
+                                    ._confeitariaIdTable(db)
+                                    .id,
+                          )
+                          as T;
                 }
 
                 return state;
@@ -1507,21 +1824,24 @@ class $$ProdutosTableTableManager extends RootTableManager<
               },
             );
           },
-        ));
+        ),
+      );
 }
 
-typedef $$ProdutosTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $ProdutosTable,
-    Produto,
-    $$ProdutosTableFilterComposer,
-    $$ProdutosTableOrderingComposer,
-    $$ProdutosTableAnnotationComposer,
-    $$ProdutosTableCreateCompanionBuilder,
-    $$ProdutosTableUpdateCompanionBuilder,
-    (Produto, $$ProdutosTableReferences),
-    Produto,
-    PrefetchHooks Function({bool confeitariaId})>;
+typedef $$ProdutosTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ProdutosTable,
+      Produto,
+      $$ProdutosTableFilterComposer,
+      $$ProdutosTableOrderingComposer,
+      $$ProdutosTableAnnotationComposer,
+      $$ProdutosTableCreateCompanionBuilder,
+      $$ProdutosTableUpdateCompanionBuilder,
+      (Produto, $$ProdutosTableReferences),
+      Produto,
+      PrefetchHooks Function({bool confeitariaId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;

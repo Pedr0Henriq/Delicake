@@ -4,9 +4,14 @@ import 'package:app_desafio/ui/_core/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ArquiteturaProduto extends StatelessWidget {
+  const ArquiteturaProduto({
+    super.key,
+    required this.produto,
+    required this.onRemover,
+  });
+
   final Produto produto;
   final VoidCallback onRemover;
-  const ArquiteturaProduto({super.key, required this.produto, required this.onRemover});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +66,10 @@ class ArquiteturaProduto extends StatelessWidget {
             ],
           ),
         ),
-        IconButton(onPressed: onRemover, icon: Icon(Icons.delete,))
+        IconButton(
+          onPressed: onRemover,
+          icon: Icon(Icons.delete),
+        )
       ],
     );
   }

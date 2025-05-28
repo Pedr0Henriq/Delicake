@@ -1,7 +1,10 @@
+import 'package:app_desafio/database/database.dart';
 import 'package:app_desafio/ui/home/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-// Cria um observador de rotas, que permite monitorar as mudanças de navegação (útil para saber quando uma tela foi empurrada, removida, etc.).Usado na função de _loadConfeitarias
+import 'ui/_core/app_colors.dart';
+
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 void main() {
@@ -9,16 +12,25 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const HomeScreen(),
-      navigatorObservers: [routeObserver],
-      // Adiciona o routeObserver como observador das rotas de navegação.
-      // Isso é útil para detectar eventos como didPush, didPop etc.
+    return Provider(
+      create: (context) => AppDatabase(),
+      dispose: (context, value) => value.close(),
+      child: MaterialApp(
+        home: const HomeScreen(),
+        navigatorObservers: [routeObserver],
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+          appBarTheme: AppBarTheme(
+            backgroundColor: AppColors.backgroundColor,
+            foregroundColor: AppColors.mainColor,
+          ),
+        ),
+      ),
     );
   }
 }

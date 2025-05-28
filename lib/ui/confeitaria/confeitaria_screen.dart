@@ -4,6 +4,7 @@ import 'package:app_desafio/ui/_core/app_colors.dart';
 import 'package:app_desafio/ui/confeitaria/arquitetura_produto.dart';
 import 'package:app_desafio/ui/sign_up/cadastro_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 // ignore: must_be_immutable
 class ConfeitariaScreen extends StatefulWidget {
@@ -14,15 +15,17 @@ class ConfeitariaScreen extends StatefulWidget {
   State<ConfeitariaScreen> createState() => _ConfeitariaScreenState();
 }
 
-class _ConfeitariaScreenState extends State<ConfeitariaScreen> with RouteAware{
- AppDatabase db = AppDatabase();
- List<Produto> produtos = []; //lista dos produtos da confeitaria
+class _ConfeitariaScreenState extends State<ConfeitariaScreen> with RouteAware {
+  late final db = context.read<AppDatabase>();
+  List<Produto> produtos = []; //lista dos produtos da confeitaria
 
-
-@override
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute); //assina a rota para mopercebi que no mnitoramento
+    routeObserver.subscribe(
+        this,
+        ModalRoute.of(context)!
+            as PageRoute); //assina a rota para mopercebi que no mnitoramento
   }
 
   @override
@@ -31,106 +34,110 @@ class _ConfeitariaScreenState extends State<ConfeitariaScreen> with RouteAware{
     super.dispose();
   }
 
-
-@override
+  @override
   void didPush() {
     pegaProdutos(); //chama a função quando a tela é empurrada na pilha de navegação
   }
 
-
-@override
-void initState() {
-  super.initState();
-pegaProdutos();
-}
+  @override
+  void initState() {
+    super.initState();
+    pegaProdutos();
+  }
 
 //função que busca os produtos no banco de dados
-  void pegaProdutos() async{
-  List<Produto> ps = await db.getProdutos(widget.confeitaria.id);
-        setState(() {
-          produtos = ps;
-        });
-  
+  void pegaProdutos() async {
+    List<Produto> ps = await db.getProdutos(widget.confeitaria.id);
+    setState(() {
+      produtos = ps;
+    });
   }
 
-//função que deleta a confeitaria e seus produtos, observe que segui a ordem de deletar os produtos primeiro, para que não haja sqlexception, é uma boa prática de banco de dados. 
+//função que deleta a confeitaria e seus produtos, observe que segui a ordem de deletar os produtos primeiro, para que não haja sqlexception, é uma boa prática de banco de dados.
   Future<void> deleteConfeitariaById(int id) async {
-  await (db.delete(db.produtos)
-    ..where((tbl)=> tbl.confeitariaId.equals(id))).go();
-  await (db.delete(db.confeitarias)
-    ..where((tbl) => tbl.id.equals(id))
-  ).go();
-}
+    await (db.delete(db.produtos)..where((tbl) => tbl.confeitariaId.equals(id)))
+        .go();
+    await (db.delete(db.confeitarias)..where((tbl) => tbl.id.equals(id))).go();
+  }
 
 //essa função é mais um controle para que o usuário confirme que é essa ação que ele quer fazer e não que ele fezisso por engano
-void deletarConfeitaria(){
-   showDialog(context: context, builder: (context)=> AlertDialog(
-    title: Text('Confirmar exclusão'),
-    content: Text('Tem certeza que deseja excluir esta confeitaria e todos os seus produtos?'),
-    actions: [
-      TextButton(onPressed: ()=> Navigator.pop(context), child: Text('Cancelar')),
-      TextButton(onPressed: ()async {
-        Navigator.pop(context); // fecha o dialog
-          await deleteConfeitariaById(widget.confeitaria.id);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Confeitaria excluída com sucesso')),
-          );
-          Navigator.pop(context,true);
-      }, child: Text('Sim'))
-    ],
-  ));
-}
+  void deletarConfeitaria() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('Confirmar exclusão'),
+              content: Text(
+                  'Tem certeza que deseja excluir esta confeitaria e todos os seus produtos?'),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text('Cancelar')),
+                TextButton(
+                    onPressed: () async {
+                      Navigator.pop(context); // fecha o dialog
+                      await deleteConfeitariaById(widget.confeitaria.id);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text('Confeitaria excluída com sucesso')),
+                      );
+                      Navigator.pop(context, true);
+                    },
+                    child: Text('Sim'))
+              ],
+            ));
+  }
 
 //função que vai editar a confeitaria
-void editarConfeitaria() async{
-final result =  await Navigator.push(context, MaterialPageRoute(builder: (context){
-    return CadastroScreen(econfeitaria: true,confeitaria: widget.confeitaria);
-  }));
-if (result == true) {
-  final novaConfeitaria = await db.getConfeitariaById(widget.confeitaria.id);
-  if (novaConfeitaria!=null) {
-    setState(() {
-    widget.confeitaria = novaConfeitaria;
-  });
+  void editarConfeitaria() async {
+    final result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return CadastroScreen(
+          econfeitaria: true, confeitaria: widget.confeitaria);
+    }));
+    if (result == true) {
+      final novaConfeitaria =
+          await db.getConfeitariaById(widget.confeitaria.id);
+      if (novaConfeitaria != null) {
+        setState(() {
+          widget.confeitaria = novaConfeitaria;
+        });
+      }
+    }
   }
-}
-}
 
+  void confirmarRemocao(int produtoId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Remover Produto'),
+        content: Text('Tem certeza que deseja remover este produto?'),
+        actions: [
+          TextButton(
+            child: Text('Cancelar'),
+            onPressed: () => Navigator.pop(context),
+          ),
+          TextButton(
+            child: Text('Remover'),
+            onPressed: () async {
+              Navigator.pop(context);
+              await removerProduto(produtoId);
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
-void confirmarRemocao(int produtoId) {
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: Text('Remover Produto'),
-      content: Text('Tem certeza que deseja remover este produto?'),
-      actions: [
-        TextButton(
-          child: Text('Cancelar'),
-          onPressed: () => Navigator.pop(context),
-        ),
-        TextButton(
-          child: Text('Remover'),
-          onPressed: () async {
-            Navigator.pop(context);
-            await removerProduto(produtoId);
-          },
-        ),
-      ],
-    ),
-  );
-}
-
-Future<void> removerProduto(int produtoId) async {
-  await db.removeProduto(produtoId);
-  pegaProdutos();
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text('Produto removido com sucesso!'),
-      duration: Duration(seconds: 2),
-    ),
-  );
-}
-
+  Future<void> removerProduto(int produtoId) async {
+    await db.removeProduto(produtoId);
+    pegaProdutos();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Produto removido com sucesso!'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,16 +154,16 @@ Future<void> removerProduto(int produtoId) async {
         centerTitle: true,
         actions: [
           IconButton(
-              onPressed: (){
-                  editarConfeitaria();
+              onPressed: () {
+                editarConfeitaria();
               },
               icon: Icon(
                 Icons.edit,
                 color: AppColors.backgroundColor,
               )),
           IconButton(
-              onPressed: (){
-                  deletarConfeitaria();
+              onPressed: () {
+                deletarConfeitaria();
               },
               icon: Icon(
                 Icons.delete,
@@ -182,7 +189,9 @@ Future<void> removerProduto(int produtoId) async {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Icon(
                         Icons.cake,
                         size: 100,
@@ -258,40 +267,50 @@ Future<void> removerProduto(int produtoId) async {
                 Padding(
                   padding: EdgeInsets.only(left: 30, right: 30),
                   child: Column(
-                    children: List.generate(produtos.length, (index){
-                      return Padding(padding: const EdgeInsets.only(bottom: 8.0),
-                      child: ArquiteturaProduto(produto: produtos[index],onRemover: () => confirmarRemocao(produtos[index].id),),);
+                    children: List.generate(produtos.length, (index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: ArquiteturaProduto(
+                          produto: produtos[index],
+                          onRemover: () => confirmarRemocao(produtos[index].id),
+                        ),
+                      );
                     }),
                   ),
                 ),
-                SizedBox(height: 80,),
+                SizedBox(
+                  height: 80,
+                ),
               ],
             ),
           ),
         ),
         Positioned(
-            right: 15,
-            bottom: 5,
-            child: IconButton(
-                onPressed: () async{
-               final result = await   Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return CadastroScreen(econfeitaria: false,confeitariaId: widget.confeitaria.id,);
-                  }));
-                  if(result ==true){
-                    setState(() {
-                      pegaProdutos();
-                    });
-                  }
-                },
-                    
-                icon: Icon(
-                  Icons.add_circle_outline_rounded,
-                  size: 60,
-                  color: AppColors.secondColor,
-                )))
+          right: 15,
+          bottom: 5,
+          child: IconButton(
+            onPressed: () async {
+              final result = await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) {
+                return CadastroScreen(
+                  econfeitaria: false,
+                  confeitariaId: widget.confeitaria.id,
+                );
+              }));
+              if (result == true) {
+                setState(() {
+                  pegaProdutos();
+                });
+              }
+            },
+            icon: Icon(
+              Icons.add_circle_outline_rounded,
+              size: 60,
+              color: AppColors.secondColor,
+            ),
+          ),
+        )
       ]),
     );
   }
-  
-  
 }
