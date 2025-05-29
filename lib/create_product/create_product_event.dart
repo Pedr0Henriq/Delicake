@@ -5,8 +5,12 @@ class CreateProductEvent with _$CreateProductEvent {
   const factory CreateProductEvent.started() = _Started;
 
   const factory CreateProductEvent.imageSelected({
-    required List<XFile> imagePath,
+    required List<String> imagePath,
   }) = _ImageSelected;
+
+  const factory CreateProductEvent.removeImage({
+    required String imagePath,
+  }) = _RemoveImage;
 
   const factory CreateProductEvent.submitted(
     {

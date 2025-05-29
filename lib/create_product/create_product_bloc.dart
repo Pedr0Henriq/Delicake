@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_desafio/database/database.dart';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -14,6 +16,7 @@ class CreateProductBloc extends Bloc<CreateProductEvent, CreateProductState> {
     on<_Started>(_onStarted, transformer: droppable());
     on<_Submitted>(_onSubmitted, transformer: droppable());
     on<_ImageSelected>(_onImageSelected, transformer: droppable());  
+    on<_RemoveImage>(_onRemoveImage, transformer: droppable());
   }
 
   final AppDatabase _db;
@@ -31,7 +34,7 @@ class CreateProductBloc extends Bloc<CreateProductEvent, CreateProductState> {
     Emitter<CreateProductState> emit,
   ) async {
     final currentImages = List<String>.from(state.images ?? []);
-    currentImages.add(event._imagePath.first.path);
+    currentImages.addAll(event._imagePath);
     emit(state.copyWith(images: currentImages));
   }
 
@@ -56,6 +59,15 @@ class CreateProductBloc extends Bloc<CreateProductEvent, CreateProductState> {
       emit(state.copyWith(
         status: CreateProductStatus.failure(message: e.toString()),
       ));
+    }
+  }
+
+  FutureOr<void> _onRemoveImage(_RemoveImage event, Emitter<CreateProductState> emit) {
+    try {
+      final novasImagens = List<String>.from(state.images!)..remove(event.imagePath);
+      emit(state.copyWith(images: novasImagens,status: CreateProductStatus.success()));
+    } catch (e) {
+      emit(state.copyWith(status: CreateProductStatus.failure()));
     }
   }
 }

@@ -78,11 +78,11 @@ String toString() {
 
 
 class _ImageSelected implements CreateProductEvent {
-  const _ImageSelected({required final  List<XFile> imagePath}): _imagePath = imagePath;
+  const _ImageSelected({required final  List<String> imagePath}): _imagePath = imagePath;
   
 
- final  List<XFile> _imagePath;
- List<XFile> get imagePath {
+ final  List<String> _imagePath;
+ List<String> get imagePath {
   if (_imagePath is EqualUnmodifiableListView) return _imagePath;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_imagePath);
@@ -119,7 +119,7 @@ abstract mixin class _$ImageSelectedCopyWith<$Res> implements $CreateProductEven
   factory _$ImageSelectedCopyWith(_ImageSelected value, $Res Function(_ImageSelected) _then) = __$ImageSelectedCopyWithImpl;
 @useResult
 $Res call({
- List<XFile> imagePath
+ List<String> imagePath
 });
 
 
@@ -139,7 +139,73 @@ class __$ImageSelectedCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') $Res call({Object? imagePath = null,}) {
   return _then(_ImageSelected(
 imagePath: null == imagePath ? _self._imagePath : imagePath // ignore: cast_nullable_to_non_nullable
-as List<XFile>,
+as List<String>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _RemoveImage implements CreateProductEvent {
+  const _RemoveImage({required this.imagePath});
+  
+
+ final  String imagePath;
+
+/// Create a copy of CreateProductEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RemoveImageCopyWith<_RemoveImage> get copyWith => __$RemoveImageCopyWithImpl<_RemoveImage>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RemoveImage&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,imagePath);
+
+@override
+String toString() {
+  return 'CreateProductEvent.removeImage(imagePath: $imagePath)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RemoveImageCopyWith<$Res> implements $CreateProductEventCopyWith<$Res> {
+  factory _$RemoveImageCopyWith(_RemoveImage value, $Res Function(_RemoveImage) _then) = __$RemoveImageCopyWithImpl;
+@useResult
+$Res call({
+ String imagePath
+});
+
+
+
+
+}
+/// @nodoc
+class __$RemoveImageCopyWithImpl<$Res>
+    implements _$RemoveImageCopyWith<$Res> {
+  __$RemoveImageCopyWithImpl(this._self, this._then);
+
+  final _RemoveImage _self;
+  final $Res Function(_RemoveImage) _then;
+
+/// Create a copy of CreateProductEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? imagePath = null,}) {
+  return _then(_RemoveImage(
+imagePath: null == imagePath ? _self.imagePath : imagePath // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
