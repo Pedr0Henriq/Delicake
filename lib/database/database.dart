@@ -1,3 +1,4 @@
+import 'package:app_desafio/database/dao/produtos_dao.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'dart:io';
@@ -73,7 +74,7 @@ class JsonListConverter extends TypeConverter<List<String>, String> {
   }
 }
 
-@DriftDatabase(tables: [Confeitarias, Produtos], daos: [ConfeitariasDao])
+@DriftDatabase(tables: [Confeitarias, Produtos], daos: [ConfeitariasDao, ProdutosDao])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
