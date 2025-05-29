@@ -20,4 +20,8 @@ class ConfeitariasDao extends DatabaseAccessor<AppDatabase>
     return (update(confeitarias)
       ..where((t) => t.id.equals(id))).write(confeitaria);
   }
+
+  Future<void> deleteAt(int id){
+    return (delete(confeitarias)..where((t) => t.id.equals(id))).go();
+  }
 }

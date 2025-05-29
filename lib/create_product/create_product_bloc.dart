@@ -10,14 +10,14 @@ part 'create_product_state.dart';
 part 'create_product_bloc.freezed.dart';
 
 class CreateProductBloc extends Bloc<CreateProductEvent, CreateProductState> {
-  CreateProductBloc(this._db,this.confectioneryId) : super(const CreateProductState()) {
+  CreateProductBloc(this._db,this._confectioneryId) : super(const CreateProductState()) {
     on<_Started>(_onStarted, transformer: droppable());
     on<_Submitted>(_onSubmitted, transformer: droppable());
     on<_ImageSelected>(_onImageSelected, transformer: droppable());  
   }
 
   final AppDatabase _db;
-  final int confectioneryId;
+  final int _confectioneryId;
 
   Future<void> _onStarted(
     _Started event,
@@ -47,7 +47,7 @@ class CreateProductBloc extends Bloc<CreateProductEvent, CreateProductState> {
         descricao: event.description,
         valor: event.price,
         imagens: drift.Value(event.images),
-        confeitariaId: confectioneryId,
+        confeitariaId: _confectioneryId,
       );
 
       await _db.produtosDao.insertProduto(product);

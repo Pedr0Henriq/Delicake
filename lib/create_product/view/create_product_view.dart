@@ -217,16 +217,13 @@ class _CreateProductViewState extends State<CreateProductView> {
                   child: FilledButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        context.read<CreateBloc>().add(
-                          CreateEvent.submitted(
-                            name: _nomeController.text,
-                            phone: _telefoneController.text,
-                            cep: _cepController.text,
-                            street: _ruaController.text,
-                            city: _cidadeController.text,
-                            state: _estadoController.text,
-                            neighborhood: _bairroController.text,
-                            number: _numeroController.text,
+                        context.read<CreateProductBloc>().add(
+                          CreateProductEvent.submitted(
+                            name: _nameController.text,
+                            description: _descriptionController.text,
+                            images: _selectedImages,
+                            price: double.tryParse(_priceController.text) ?? 0.0,
+                            confectioneryId: 1, //mudar
                           ),
                         );
                       }
