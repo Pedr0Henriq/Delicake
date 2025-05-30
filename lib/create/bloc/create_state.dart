@@ -3,6 +3,7 @@ part of 'create_bloc.dart';
 @freezed
 sealed class CreateState with _$CreateState {
   const factory CreateState({
+    Confeitaria? confectionery,
     String? street,
     String? city,
     String? state,

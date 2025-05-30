@@ -16,4 +16,18 @@ class CreateEvent with _$CreateEvent {
     required String neighborhood,
     required String number,
   }) = _Submitted;
+
+  const factory CreateEvent.loadConfectioneries(int id) = _LoadConfectioneries;
+
+  const factory CreateEvent.edit({
+    required int id,
+    required String name,
+    required String phone,
+    required String cep,
+    required String street,
+    required String city,
+    required String state,
+    required String neighborhood,
+    required String number,
+  }) = _Edit;
 }

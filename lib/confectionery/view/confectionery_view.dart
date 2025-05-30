@@ -1,4 +1,5 @@
 import 'package:app_desafio/confectionery/bloc/confectionery_bloc.dart';
+import 'package:app_desafio/create/view/edit/edit_page.dart';
 import 'package:app_desafio/create_product/view/create_product_page.dart';
 import 'package:app_desafio/ui/_core/app_colors.dart';
 import 'package:app_desafio/ui/confeitaria/arquitetura_produto.dart';
@@ -58,7 +59,9 @@ class _ConfectioneryViewState extends State<ConfectioneryView> {
         actions: [
           IconButton(
             onPressed: () {
-              // TODO: abrir tela de edição
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) =>  EditPage(id: confeitaria.id),
+              ));
             },
             icon: Icon(Icons.edit, color: AppColors.mainColor),
           ),

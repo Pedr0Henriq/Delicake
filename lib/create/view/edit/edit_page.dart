@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditPage extends StatelessWidget {
-  const EditPage({super.key});
+  final int id;
+  const EditPage({required this.id, super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(create: (context) =>
-      CreateBloc(context.read<AppDatabase>())..add(CreateEvent.started()),
-      child: EditView(),);
+      CreateBloc(context.read<AppDatabase>())..add(CreateEvent.loadConfectioneries(id)),
+      child: EditView(id:id),);
       
   }
 }
