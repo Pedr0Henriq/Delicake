@@ -5,7 +5,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../create/view/create_page.dart';
-import '../../ui/confeitaria/confeitaria_screen.dart';
 import '../bloc/map_bloc.dart';
 
 class MapView extends StatefulWidget {

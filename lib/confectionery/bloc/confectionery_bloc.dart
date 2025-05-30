@@ -12,6 +12,7 @@ class ConfectioneryBloc extends Bloc<ConfectioneryEvent, ConfectioneryState> {
     on<_Started>(_onStarted, transformer: droppable());
     on<_LoadedProducts>(_onLoadedProducts, transformer: droppable());
     on<_DeletedConfectionery>(_onDeletedConfectionery, transformer: droppable());
+    on<_DeletedProduct>(_onDeletedProduct, transformer: droppable());
   }
 
   final AppDatabase _db;
@@ -48,6 +49,16 @@ class ConfectioneryBloc extends Bloc<ConfectioneryEvent, ConfectioneryState> {
       emit(state.copyWith(status: const ConfectioneryStatus.loading()));
       await _db.confeitariasDao.deleteAt(event.id);
       emit(state.copyWith(status: const ConfectioneryStatus.deletedwithsucess()));
+    } catch (e) {
+      emit(state.copyWith(status: ConfectioneryStatus.deletedwithfailure(e.toString())));
+    }
+  }
+
+  Future<void> _onDeletedProduct(_DeletedProduct event, Emitter<ConfectioneryState> emit) async {
+    try {
+      emit(state.copyWith(status: const ConfectioneryStatus.loading()));
+      await _db.produtosDao.deleteAt(event.id);
+      add(ConfectioneryEvent.loadedProducts(state.confectionery!));
     } catch (e) {
       emit(state.copyWith(status: ConfectioneryStatus.deletedwithfailure(e.toString())));
     }

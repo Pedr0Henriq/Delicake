@@ -241,6 +241,72 @@ as int,
 }
 
 /// @nodoc
+
+
+class _DeletedProduct implements ConfectioneryEvent {
+  const _DeletedProduct(this.id);
+  
+
+ final  int id;
+
+/// Create a copy of ConfectioneryEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$DeletedProductCopyWith<_DeletedProduct> get copyWith => __$DeletedProductCopyWithImpl<_DeletedProduct>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DeletedProduct&&(identical(other.id, id) || other.id == id));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id);
+
+@override
+String toString() {
+  return 'ConfectioneryEvent.deleteProduct(id: $id)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$DeletedProductCopyWith<$Res> implements $ConfectioneryEventCopyWith<$Res> {
+  factory _$DeletedProductCopyWith(_DeletedProduct value, $Res Function(_DeletedProduct) _then) = __$DeletedProductCopyWithImpl;
+@useResult
+$Res call({
+ int id
+});
+
+
+
+
+}
+/// @nodoc
+class __$DeletedProductCopyWithImpl<$Res>
+    implements _$DeletedProductCopyWith<$Res> {
+  __$DeletedProductCopyWithImpl(this._self, this._then);
+
+  final _DeletedProduct _self;
+  final $Res Function(_DeletedProduct) _then;
+
+/// Create a copy of ConfectioneryEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
+  return _then(_DeletedProduct(
+null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+/// @nodoc
 mixin _$ConfectioneryState {
 
  Confeitaria? get confectionery; List<Produto> get products; ConfectioneryStatus get status;

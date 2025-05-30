@@ -121,13 +121,15 @@ class _ConfectioneryViewState extends State<ConfectioneryView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
-                children: List.generate(state.products!.length, (index) {
+                children: List.generate(state.products.length, (index) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: ArquiteturaProduto(
-                      produto: state.products![index],
+                      produto: state.products[index],
                       onRemover: () {
-                        // TODO: implementar remoção
+                        context.read<ConfectioneryBloc>().add(
+                          ConfectioneryEvent.deleteProduct(state.products[index].id),
+                        );
                       },
                     ),
                   );

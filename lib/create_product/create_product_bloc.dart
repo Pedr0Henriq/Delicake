@@ -5,7 +5,6 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:image_picker/image_picker.dart';
 
 part 'create_product_event.dart';
 part 'create_product_state.dart';
@@ -33,9 +32,16 @@ class CreateProductBloc extends Bloc<CreateProductEvent, CreateProductState> {
     _ImageSelected event,
     Emitter<CreateProductState> emit,
   ) async {
-    final currentImages = List<String>.from(state.images ?? []);
+    try {
+      emit(state.copyWith(status: const CreateProductStatus.loading()));
+      final currentImages = List<String>.from(state.images ?? []);
     currentImages.addAll(event._imagePath);
-    emit(state.copyWith(images: currentImages));
+    emit(state.copyWith(images: currentImages, status: const CreateProductStatus.initial()));
+    } catch (e) {
+      emit(state.copyWith(
+        status: CreateProductStatus.failure(message: e.toString()),
+      ));
+    }
   }
 
   Future<void> _onSubmitted(
@@ -64,8 +70,9 @@ class CreateProductBloc extends Bloc<CreateProductEvent, CreateProductState> {
 
   FutureOr<void> _onRemoveImage(_RemoveImage event, Emitter<CreateProductState> emit) {
     try {
+      emit(state.copyWith(status: const CreateProductStatus.loading()));
       final novasImagens = List<String>.from(state.images!)..remove(event.imagePath);
-      emit(state.copyWith(images: novasImagens,status: CreateProductStatus.success()));
+      emit(state.copyWith(images: novasImagens,status: CreateProductStatus.initial()));
     } catch (e) {
       emit(state.copyWith(status: CreateProductStatus.failure()));
     }
