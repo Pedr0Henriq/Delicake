@@ -12,6 +12,13 @@ class ConfeitariasDao extends DatabaseAccessor<AppDatabase>
   Stream<List<Confeitaria>> getAllConfeitarias() =>
       select(confeitarias).watch();
 
+    Stream<Confeitaria?> getConfeitariaById(int id) {
+    final query =
+        (select(confeitarias)
+          ..where((tbl) => tbl.id.equals(id))).watchSingleOrNull();
+    return query;
+  }
+
   Future<void> insertConfeitaria(ConfeitariasCompanion confeitaria) {
     return into(confeitarias).insert(confeitaria);
   }
@@ -19,5 +26,9 @@ class ConfeitariasDao extends DatabaseAccessor<AppDatabase>
   Future<void> updateAt(int id, ConfeitariasCompanion confeitaria) {
     return (update(confeitarias)
       ..where((t) => t.id.equals(id))).write(confeitaria);
+  }
+
+  Future<void> deleteAt(int id){
+    return (delete(confeitarias)..where((t) => t.id.equals(id))).go();
   }
 }

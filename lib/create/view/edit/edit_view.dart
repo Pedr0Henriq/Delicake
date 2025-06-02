@@ -1,17 +1,17 @@
+import 'package:app_desafio/create/bloc/create_bloc.dart';
+import 'package:app_desafio/ui/_core/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../ui/_core/app_colors.dart';
-import '../bloc/create_bloc.dart';
-
-class CreateView extends StatefulWidget {
-  const CreateView({super.key});
+class EditView extends StatefulWidget {
+  final int id;
+  const EditView({required this.id, super.key});
 
   @override
-  State<CreateView> createState() => _CreateViewState();
+  State<EditView> createState() => _EditViewState();
 }
 
-class _CreateViewState extends State<CreateView> {
+class _EditViewState extends State<EditView> {
   final _formKey = GlobalKey<FormState>();
   final _nomeController = TextEditingController();
   final _telefoneController = TextEditingController();
@@ -23,106 +23,28 @@ class _CreateViewState extends State<CreateView> {
   final _numeroController = TextEditingController();
 
   @override
-  void dispose() {
-    _nomeController.dispose();
-    _telefoneController.dispose();
-    _cepController.dispose();
-    _cidadeController.dispose();
-    _bairroController.dispose();
-    _estadoController.dispose();
-    _ruaController.dispose();
-    _numeroController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<CreateBloc, CreateState>(
-          listenWhen:
-              (prev, curr) =>
-                  prev.status is! CreateStatusLoading &&
-                  curr.status is CreateStatusLoading,
-          listener: (context, state) {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder:
-                  (context) => AlertDialog(
-                    content: Row(
-                      children: const [
-                        CircularProgressIndicator(),
-                        SizedBox(width: 16),
-                        Text('Buscando cep...'),
-                      ],
-                    ),
-                  ),
-            );
-          },
-        ),
-        BlocListener<CreateBloc, CreateState>(
-          listenWhen:
-              (prev, curr) =>
-                  prev.status is CreateStatusLoading &&
-                  curr.status is! CreateStatusLoading,
-          listener: (context, state) {
-            Navigator.of(context).pop();
-          },
-        ),
-        BlocListener<CreateBloc, CreateState>(
-          listenWhen: (previous, current) => previous.status != current.status,
-          listener: (context, state) {
-            if (state.status is CreateStatusSuccess) {
-              Navigator.of(context).pop();
-            } else if (state.status case CreateStatusFailure(
-              message: String message,
-            )) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(message)));
-            }
-          },
-        ),
-        BlocListener<CreateBloc, CreateState>(
-          listenWhen:
-              (previous, current) =>
-                  previous.street != current.street ||
-                  previous.city != current.city ||
-                  previous.state != current.state ||
-                  previous.neighborhood != current.neighborhood ||
-                  previous.number != current.number,
-          listener: (context, state) {
-            if (state.street != null) {
-              _ruaController.text = state.street!;
-            }
-            if (state.city != null) {
-              _cidadeController.text = state.city!;
-            }
-            if (state.state != null) {
-              _estadoController.text = state.state!;
-            }
-            if (state.neighborhood != null) {
-              _bairroController.text = state.neighborhood!;
-            }
-            if (state.number != null) {
-              _numeroController.text = state.number!;
-            }
-          },
-        ),
-      ],
-      child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
-        appBar: AppBar(
+    return BlocConsumer<CreateBloc,CreateState>(
+      builder: (context, state) {
+        if (state.status is CreateStatusLoading && state.confectionery!=null) {
+          return const Center(child: CircularProgressIndicator()); 
+        }
+        return Scaffold(
+          backgroundColor: AppColors.backgroundColor,
+          appBar: AppBar(
           title: Text(
-            'Cadastro de Confeitaria',
+            'Edição de Confeitaria',
             style: TextStyle(
               fontFamily: 'LobsterTwo',
-
               fontWeight: FontWeight.bold,
             ),
           ),
-
           centerTitle: true,
         ),
         body: CustomScrollView(
@@ -156,7 +78,6 @@ class _CreateViewState extends State<CreateView> {
                       TextFormField(
                         controller: _telefoneController,
                         keyboardType: TextInputType.phone,
-                        maxLength: 13,
                         decoration: InputDecoration(
                           labelText: 'Telefone',
                           border: OutlineInputBorder(),
@@ -328,9 +249,9 @@ class _CreateViewState extends State<CreateView> {
                   child: FilledButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        print('Telefone na tela de cadastro: ${_telefoneController.text}');
                         context.read<CreateBloc>().add(
-                          CreateEvent.submitted(
+                          CreateEvent.edit(
+                            id: widget.id,
                             name: _nomeController.text,
                             phone: _telefoneController.text,
                             cep: _cepController.text,
@@ -357,7 +278,30 @@ class _CreateViewState extends State<CreateView> {
             ),
           ],
         ),
-      ),
-    );
+        );
+      }, 
+      listener: (context, state) {
+        if(state.status is CreateStatusInitial && state.confectionery != null) {
+          final confectionery = state.confectionery!;
+          _nomeController.text = confectionery.nome;
+          _telefoneController.text = confectionery.telefone ?? '';
+          _cepController.text = confectionery.cep;
+          _cidadeController.text = confectionery.cidade;
+          _bairroController.text = confectionery.bairro;
+          _estadoController.text = confectionery.estado;
+          _ruaController.text = confectionery.rua;
+          _numeroController.text = confectionery.numero;
+        } else if (state.status is CreateStatusFailure) {
+          final message = (state.status as CreateStatusFailure).message;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message ?? 'Erro ao editar a confeitaria')),
+          );
+        } else if (state.status is CreateStatusSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Confeitaria editada com sucesso!')),
+          );
+          Navigator.of(context).pop();
+        }
+      },);
   }
 }

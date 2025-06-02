@@ -221,9 +221,157 @@ as String,
 }
 
 /// @nodoc
+
+
+class _LoadConfectioneries implements CreateEvent {
+  const _LoadConfectioneries(this.id);
+  
+
+ final  int id;
+
+/// Create a copy of CreateEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$LoadConfectioneriesCopyWith<_LoadConfectioneries> get copyWith => __$LoadConfectioneriesCopyWithImpl<_LoadConfectioneries>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoadConfectioneries&&(identical(other.id, id) || other.id == id));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id);
+
+@override
+String toString() {
+  return 'CreateEvent.loadConfectioneries(id: $id)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$LoadConfectioneriesCopyWith<$Res> implements $CreateEventCopyWith<$Res> {
+  factory _$LoadConfectioneriesCopyWith(_LoadConfectioneries value, $Res Function(_LoadConfectioneries) _then) = __$LoadConfectioneriesCopyWithImpl;
+@useResult
+$Res call({
+ int id
+});
+
+
+
+
+}
+/// @nodoc
+class __$LoadConfectioneriesCopyWithImpl<$Res>
+    implements _$LoadConfectioneriesCopyWith<$Res> {
+  __$LoadConfectioneriesCopyWithImpl(this._self, this._then);
+
+  final _LoadConfectioneries _self;
+  final $Res Function(_LoadConfectioneries) _then;
+
+/// Create a copy of CreateEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
+  return _then(_LoadConfectioneries(
+null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _Edit implements CreateEvent {
+  const _Edit({required this.id, required this.name, required this.phone, required this.cep, required this.street, required this.city, required this.state, required this.neighborhood, required this.number});
+  
+
+ final  int id;
+ final  String name;
+ final  String phone;
+ final  String cep;
+ final  String street;
+ final  String city;
+ final  String state;
+ final  String neighborhood;
+ final  String number;
+
+/// Create a copy of CreateEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$EditCopyWith<_Edit> get copyWith => __$EditCopyWithImpl<_Edit>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Edit&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.cep, cep) || other.cep == cep)&&(identical(other.street, street) || other.street == street)&&(identical(other.city, city) || other.city == city)&&(identical(other.state, state) || other.state == state)&&(identical(other.neighborhood, neighborhood) || other.neighborhood == neighborhood)&&(identical(other.number, number) || other.number == number));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id,name,phone,cep,street,city,state,neighborhood,number);
+
+@override
+String toString() {
+  return 'CreateEvent.edit(id: $id, name: $name, phone: $phone, cep: $cep, street: $street, city: $city, state: $state, neighborhood: $neighborhood, number: $number)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$EditCopyWith<$Res> implements $CreateEventCopyWith<$Res> {
+  factory _$EditCopyWith(_Edit value, $Res Function(_Edit) _then) = __$EditCopyWithImpl;
+@useResult
+$Res call({
+ int id, String name, String phone, String cep, String street, String city, String state, String neighborhood, String number
+});
+
+
+
+
+}
+/// @nodoc
+class __$EditCopyWithImpl<$Res>
+    implements _$EditCopyWith<$Res> {
+  __$EditCopyWithImpl(this._self, this._then);
+
+  final _Edit _self;
+  final $Res Function(_Edit) _then;
+
+/// Create a copy of CreateEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? phone = null,Object? cep = null,Object? street = null,Object? city = null,Object? state = null,Object? neighborhood = null,Object? number = null,}) {
+  return _then(_Edit(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,cep: null == cep ? _self.cep : cep // ignore: cast_nullable_to_non_nullable
+as String,street: null == street ? _self.street : street // ignore: cast_nullable_to_non_nullable
+as String,city: null == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
+as String,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
+as String,neighborhood: null == neighborhood ? _self.neighborhood : neighborhood // ignore: cast_nullable_to_non_nullable
+as String,number: null == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
 mixin _$CreateState {
 
- String? get street; String? get city; String? get state; String? get neighborhood; String? get number; CreateStatus get status;
+ Confeitaria? get confectionery; String? get street; String? get city; String? get state; String? get neighborhood; String? get number; String? get phone; CreateStatus get status;
 /// Create a copy of CreateState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -234,16 +382,16 @@ $CreateStateCopyWith<CreateState> get copyWith => _$CreateStateCopyWithImpl<Crea
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateState&&(identical(other.street, street) || other.street == street)&&(identical(other.city, city) || other.city == city)&&(identical(other.state, state) || other.state == state)&&(identical(other.neighborhood, neighborhood) || other.neighborhood == neighborhood)&&(identical(other.number, number) || other.number == number)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateState&&(identical(other.confectionery, confectionery) || other.confectionery == confectionery)&&(identical(other.street, street) || other.street == street)&&(identical(other.city, city) || other.city == city)&&(identical(other.state, state) || other.state == state)&&(identical(other.neighborhood, neighborhood) || other.neighborhood == neighborhood)&&(identical(other.number, number) || other.number == number)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,street,city,state,neighborhood,number,status);
+int get hashCode => Object.hash(runtimeType,confectionery,street,city,state,neighborhood,number,phone,status);
 
 @override
 String toString() {
-  return 'CreateState(street: $street, city: $city, state: $state, neighborhood: $neighborhood, number: $number, status: $status)';
+  return 'CreateState(confectionery: $confectionery, street: $street, city: $city, state: $state, neighborhood: $neighborhood, number: $number, phone: $phone, status: $status)';
 }
 
 
@@ -254,7 +402,7 @@ abstract mixin class $CreateStateCopyWith<$Res>  {
   factory $CreateStateCopyWith(CreateState value, $Res Function(CreateState) _then) = _$CreateStateCopyWithImpl;
 @useResult
 $Res call({
- String? street, String? city, String? state, String? neighborhood, String? number, CreateStatus status
+ Confeitaria? confectionery, String? street, String? city, String? state, String? neighborhood, String? number, String? phone, CreateStatus status
 });
 
 
@@ -271,13 +419,15 @@ class _$CreateStateCopyWithImpl<$Res>
 
 /// Create a copy of CreateState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? street = freezed,Object? city = freezed,Object? state = freezed,Object? neighborhood = freezed,Object? number = freezed,Object? status = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? confectionery = freezed,Object? street = freezed,Object? city = freezed,Object? state = freezed,Object? neighborhood = freezed,Object? number = freezed,Object? phone = freezed,Object? status = null,}) {
   return _then(_self.copyWith(
-street: freezed == street ? _self.street : street // ignore: cast_nullable_to_non_nullable
+confectionery: freezed == confectionery ? _self.confectionery : confectionery // ignore: cast_nullable_to_non_nullable
+as Confeitaria?,street: freezed == street ? _self.street : street // ignore: cast_nullable_to_non_nullable
 as String?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
 as String?,state: freezed == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as String?,neighborhood: freezed == neighborhood ? _self.neighborhood : neighborhood // ignore: cast_nullable_to_non_nullable
 as String?,number: freezed == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
+as String?,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as CreateStatus,
   ));
@@ -299,14 +449,16 @@ $CreateStatusCopyWith<$Res> get status {
 
 
 class _CreateState implements CreateState {
-  const _CreateState({this.street, this.city, this.state, this.neighborhood, this.number, this.status = const CreateStatus.initial()});
+  const _CreateState({this.confectionery, this.street, this.city, this.state, this.neighborhood, this.number, this.phone, this.status = const CreateStatus.initial()});
   
 
+@override final  Confeitaria? confectionery;
 @override final  String? street;
 @override final  String? city;
 @override final  String? state;
 @override final  String? neighborhood;
 @override final  String? number;
+@override final  String? phone;
 @override@JsonKey() final  CreateStatus status;
 
 /// Create a copy of CreateState
@@ -319,16 +471,16 @@ _$CreateStateCopyWith<_CreateState> get copyWith => __$CreateStateCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateState&&(identical(other.street, street) || other.street == street)&&(identical(other.city, city) || other.city == city)&&(identical(other.state, state) || other.state == state)&&(identical(other.neighborhood, neighborhood) || other.neighborhood == neighborhood)&&(identical(other.number, number) || other.number == number)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateState&&(identical(other.confectionery, confectionery) || other.confectionery == confectionery)&&(identical(other.street, street) || other.street == street)&&(identical(other.city, city) || other.city == city)&&(identical(other.state, state) || other.state == state)&&(identical(other.neighborhood, neighborhood) || other.neighborhood == neighborhood)&&(identical(other.number, number) || other.number == number)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,street,city,state,neighborhood,number,status);
+int get hashCode => Object.hash(runtimeType,confectionery,street,city,state,neighborhood,number,phone,status);
 
 @override
 String toString() {
-  return 'CreateState(street: $street, city: $city, state: $state, neighborhood: $neighborhood, number: $number, status: $status)';
+  return 'CreateState(confectionery: $confectionery, street: $street, city: $city, state: $state, neighborhood: $neighborhood, number: $number, phone: $phone, status: $status)';
 }
 
 
@@ -339,7 +491,7 @@ abstract mixin class _$CreateStateCopyWith<$Res> implements $CreateStateCopyWith
   factory _$CreateStateCopyWith(_CreateState value, $Res Function(_CreateState) _then) = __$CreateStateCopyWithImpl;
 @override @useResult
 $Res call({
- String? street, String? city, String? state, String? neighborhood, String? number, CreateStatus status
+ Confeitaria? confectionery, String? street, String? city, String? state, String? neighborhood, String? number, String? phone, CreateStatus status
 });
 
 
@@ -356,13 +508,15 @@ class __$CreateStateCopyWithImpl<$Res>
 
 /// Create a copy of CreateState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? street = freezed,Object? city = freezed,Object? state = freezed,Object? neighborhood = freezed,Object? number = freezed,Object? status = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? confectionery = freezed,Object? street = freezed,Object? city = freezed,Object? state = freezed,Object? neighborhood = freezed,Object? number = freezed,Object? phone = freezed,Object? status = null,}) {
   return _then(_CreateState(
-street: freezed == street ? _self.street : street // ignore: cast_nullable_to_non_nullable
+confectionery: freezed == confectionery ? _self.confectionery : confectionery // ignore: cast_nullable_to_non_nullable
+as Confeitaria?,street: freezed == street ? _self.street : street // ignore: cast_nullable_to_non_nullable
 as String?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
 as String?,state: freezed == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as String?,neighborhood: freezed == neighborhood ? _self.neighborhood : neighborhood // ignore: cast_nullable_to_non_nullable
 as String?,number: freezed == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
+as String?,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as CreateStatus,
   ));

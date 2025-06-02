@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateProductPage extends StatelessWidget {
-  const CreateProductPage({super.key});
+ final int id;
+  const  CreateProductPage({required this.id, super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(create: (context) {
       // Assuming CreateProductBloc is defined and imported
-      return CreateProductBloc(context.read<AppDatabase>())
+      return CreateProductBloc(context.read<AppDatabase>(),id)
         ..add(const CreateProductEvent.started());
     }, child: const CreateProductView());
   }

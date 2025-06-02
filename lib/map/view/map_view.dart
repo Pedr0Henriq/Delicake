@@ -1,10 +1,10 @@
+import 'package:app_desafio/confectionery/view/confectionery_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../create/view/create_page.dart';
-import '../../ui/confeitaria/confeitaria_screen.dart';
 import '../bloc/map_bloc.dart';
 
 class MapView extends StatefulWidget {
@@ -55,12 +55,13 @@ class _MapViewState extends State<MapView> {
                                 point: LatLng(c.latitude, c.longitude),
                                 child: GestureDetector(
                                   onTap: () async {
+                                    print(c.nome);
                                     await Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return ConfeitariaScreen(
-                                            confeitaria: c,
+                                          return ConfectioneryPage(
+                                            id: c.id,
                                           );
                                         },
                                       ),
