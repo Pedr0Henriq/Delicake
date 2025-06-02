@@ -16,24 +16,43 @@ class ConfectioneryView extends StatefulWidget {
 class _ConfectioneryViewState extends State<ConfectioneryView> {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ConfectioneryBloc, ConfectioneryState>(
-      listenWhen: (prev, curr) => prev.status != curr.status,
-      listener: (context, state) {
-        if (state.status is ConfectioneryStatusDeletedWithSucess) {
-          Navigator.of(context).pop();
-        }
-        if (state.status is ConfectioneryStatusDeletedWithFailure) {
-          final failure = state.status as ConfectioneryStatusDeletedWithFailure;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Erro ao deletar: ${failure.message}')),
-          );
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ConfectioneryBloc, ConfectioneryState>(
+          listenWhen: (prev, curr) => prev.status != curr.status,
+          listener: (context, state) {
+            if (state.status is ConfectioneryStatusDeletedWithSucess) {
+              Navigator.of(context).pop();
+            }
+            if (state.status is ConfectioneryStatusDeletedWithFailure) {
+              final failure =
+                  state.status as ConfectioneryStatusDeletedWithFailure;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Erro ao deletar: //${failure.message}'),
+                ),
+              );
+            }
+          },
+        ),
+        BlocListener<ConfectioneryBloc, ConfectioneryState>(
+          listenWhen: (previous, current) => current.products.isEmpty,
+          listener: (context, state) {
+            context.read<ConfectioneryBloc>().add(ConfectioneryEvent.loadedProducts(state.confectionery!));
+          },
+        ),
+      ],
       child: BlocBuilder<ConfectioneryBloc, ConfectioneryState>(
         builder: (context, state) {
           if (state.confectionery == null) {
             return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
+              body: Center(child: Row(
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(width: 16,),
+                  Text('Carregando Confeitaria'),
+                ],
+              )),
             );
           }
 
@@ -43,33 +62,36 @@ class _ConfectioneryViewState extends State<ConfectioneryView> {
     );
   }
 
-  Widget _buildConfectioneryView(BuildContext context, ConfectioneryState state) {
+  Widget _buildConfectioneryView(
+    BuildContext context,
+    ConfectioneryState state,
+  ) {
     final confeitaria = state.confectionery!;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
           confeitaria.nome,
-          style: const TextStyle(
-            fontFamily: 'LobsterTwo',
-            fontSize: 22,
-          ),
+          style: const TextStyle(fontFamily: 'LobsterTwo', fontSize: 22),
         ),
         centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) =>  EditPage(id: confeitaria.id),
-              ));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditPage(id: confeitaria.id),
+                ),
+              );
             },
             icon: Icon(Icons.edit, color: AppColors.mainColor),
           ),
           IconButton(
             onPressed: () {
-              context
-                  .read<ConfectioneryBloc>()
-                  .add(ConfectioneryEvent.deleteConfectionery(confeitaria.id));
+              context.read<ConfectioneryBloc>().add(
+                ConfectioneryEvent.deleteConfectionery(confeitaria.id),
+              );
             },
             icon: Icon(Icons.delete, color: Colors.red),
           ),
@@ -96,12 +118,13 @@ class _ConfectioneryViewState extends State<ConfectioneryView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildInfo("Rua", confeitaria.rua),
-                        _buildInfo("Número", confeitaria.numero),
-                        _buildInfo("Bairro", confeitaria.bairro),
-                        _buildInfo("Cidade", confeitaria.cidade),
-                        _buildInfo("CEP", confeitaria.cep),
-                        _buildInfo("Estado", confeitaria.estado),
+                        _buildInfo('Rua', confeitaria.rua),
+                        _buildInfo('Número', confeitaria.numero),
+                        _buildInfo('Bairro', confeitaria.bairro),
+                        _buildInfo('Cidade', confeitaria.cidade),
+                        _buildInfo('CEP', confeitaria.cep),
+                        _buildInfo('Estado', confeitaria.estado),
+                        _buildInfo('Telefone', confeitaria.telefone ?? ''),
                       ],
                     ),
                   ),
@@ -131,7 +154,9 @@ class _ConfectioneryViewState extends State<ConfectioneryView> {
                       produto: state.products[index],
                       onRemover: () {
                         context.read<ConfectioneryBloc>().add(
-                          ConfectioneryEvent.deleteProduct(state.products[index].id),
+                          ConfectioneryEvent.deleteProduct(
+                            state.products[index].id,
+                          ),
                         );
                       },
                     ),
@@ -148,8 +173,7 @@ class _ConfectioneryViewState extends State<ConfectioneryView> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  CreateProductPage(id: confeitaria.id),
+              builder: (context) => CreateProductPage(id: confeitaria.id),
             ),
           );
         },
@@ -164,10 +188,7 @@ class _ConfectioneryViewState extends State<ConfectioneryView> {
   Widget _buildInfo(String label, String value) {
     return Text(
       '$label: $value',
-      style: TextStyle(
-        fontSize: 18,
-        color: AppColors.backgroundColor,
-      ),
+      style: TextStyle(fontSize: 18, color: AppColors.backgroundColor),
     );
   }
 }

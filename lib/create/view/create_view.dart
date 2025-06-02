@@ -156,6 +156,7 @@ class _CreateViewState extends State<CreateView> {
                       TextFormField(
                         controller: _telefoneController,
                         keyboardType: TextInputType.phone,
+                        maxLength: 13,
                         decoration: InputDecoration(
                           labelText: 'Telefone',
                           border: OutlineInputBorder(),
@@ -327,6 +328,7 @@ class _CreateViewState extends State<CreateView> {
                   child: FilledButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
+                        print('Telefone na tela de cadastro: ${_telefoneController.text}');
                         context.read<CreateBloc>().add(
                           CreateEvent.submitted(
                             name: _nomeController.text,

@@ -99,6 +99,7 @@ class CreateBloc extends Bloc<CreateEvent, CreateState> {
         estado: event.state,
         cep: event.cep,
         numero: event.number,
+        telefone: drift.Value(event.phone),
         latitude: address?.latitude ?? 0,
         longitude: address?.longitude ?? 0,
       );

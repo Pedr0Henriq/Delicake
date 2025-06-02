@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:app_desafio/create/bloc/create_bloc.dart';
 import 'package:app_desafio/ui/_core/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +32,7 @@ class _EditViewState extends State<EditView> {
   Widget build(BuildContext context) {
     return BlocConsumer<CreateBloc,CreateState>(
       builder: (context, state) {
-        if (state.status is CreateStatusLoading) {
+        if (state.status is CreateStatusLoading && state.confectionery!=null) {
           return const Center(child: CircularProgressIndicator()); 
         }
         return Scaffold(

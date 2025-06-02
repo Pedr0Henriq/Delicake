@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_desafio/database/database.dart';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -15,22 +17,27 @@ class ConfectioneryBloc extends Bloc<ConfectioneryEvent, ConfectioneryState> {
     on<_DeletedProduct>(_onDeletedProduct, transformer: droppable());
   }
 
-  final AppDatabase _db;
-  Future<void> _onStarted(_Started event, Emitter<ConfectioneryState> emit) async{
-    try {
-      emit(state.copyWith(status: const ConfectioneryStatus.loading()));
-      final confectionery = await _db.getConfeitariaById(event.id);
-      if(confectionery!= null){
-        emit(state.copyWith(confectionery: confectionery));
-        add(ConfectioneryEvent.loadedProducts(confectionery));
-      }
-      else{
-        emit(state.copyWith(status: ConfectioneryStatus.loadedwithfailure('Confeitaria não encontrada')));
-      }
-    } catch (e) {
-      emit(state.copyWith(status: ConfectioneryStatus.loadedwithfailure(e.toString())));
-    }
+  @override
+  Future<void> close() {
+    _confeitariaSubscription?.cancel();
+    return super.close();
   }
+
+  final AppDatabase _db;
+  StreamSubscription<Confeitaria?>? _confeitariaSubscription;
+  Future<void> _onStarted(_Started event, Emitter<ConfectioneryState> emit) async{
+   await emit.forEach(
+      _db.confeitariasDao.getConfeitariaById(event.id), 
+      onData: (confeitaria){
+        if(confeitaria != null){
+          return (state.copyWith(confectionery: confeitaria,status: const ConfectioneryStatus.initial()));
+        }
+        return state.copyWith(status: ConfectioneryStatus.loadedwithfailure('Confeitaria não encontrada'));
+      },
+      onError: (erro,stackTrace){
+        return state.copyWith(status: ConfectioneryStatus.loadedwithfailure(erro.toString()));
+      },);
+        }
 
   Future<void> _onLoadedProducts(_LoadedProducts event, Emitter<ConfectioneryState> emit) async{
     try {

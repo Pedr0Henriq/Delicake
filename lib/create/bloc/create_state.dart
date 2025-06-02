@@ -9,6 +9,7 @@ sealed class CreateState with _$CreateState {
     String? state,
     String? neighborhood,
     String? number,
+    String? phone,
     @Default(CreateStatus.initial()) CreateStatus status,
   }) = _CreateState;
 }

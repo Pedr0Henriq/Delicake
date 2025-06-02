@@ -371,7 +371,7 @@ as String,
 /// @nodoc
 mixin _$CreateState {
 
- Confeitaria? get confectionery; String? get street; String? get city; String? get state; String? get neighborhood; String? get number; CreateStatus get status;
+ Confeitaria? get confectionery; String? get street; String? get city; String? get state; String? get neighborhood; String? get number; String? get phone; CreateStatus get status;
 /// Create a copy of CreateState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -382,16 +382,16 @@ $CreateStateCopyWith<CreateState> get copyWith => _$CreateStateCopyWithImpl<Crea
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateState&&(identical(other.confectionery, confectionery) || other.confectionery == confectionery)&&(identical(other.street, street) || other.street == street)&&(identical(other.city, city) || other.city == city)&&(identical(other.state, state) || other.state == state)&&(identical(other.neighborhood, neighborhood) || other.neighborhood == neighborhood)&&(identical(other.number, number) || other.number == number)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateState&&(identical(other.confectionery, confectionery) || other.confectionery == confectionery)&&(identical(other.street, street) || other.street == street)&&(identical(other.city, city) || other.city == city)&&(identical(other.state, state) || other.state == state)&&(identical(other.neighborhood, neighborhood) || other.neighborhood == neighborhood)&&(identical(other.number, number) || other.number == number)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,confectionery,street,city,state,neighborhood,number,status);
+int get hashCode => Object.hash(runtimeType,confectionery,street,city,state,neighborhood,number,phone,status);
 
 @override
 String toString() {
-  return 'CreateState(confectionery: $confectionery, street: $street, city: $city, state: $state, neighborhood: $neighborhood, number: $number, status: $status)';
+  return 'CreateState(confectionery: $confectionery, street: $street, city: $city, state: $state, neighborhood: $neighborhood, number: $number, phone: $phone, status: $status)';
 }
 
 
@@ -402,7 +402,7 @@ abstract mixin class $CreateStateCopyWith<$Res>  {
   factory $CreateStateCopyWith(CreateState value, $Res Function(CreateState) _then) = _$CreateStateCopyWithImpl;
 @useResult
 $Res call({
- Confeitaria? confectionery, String? street, String? city, String? state, String? neighborhood, String? number, CreateStatus status
+ Confeitaria? confectionery, String? street, String? city, String? state, String? neighborhood, String? number, String? phone, CreateStatus status
 });
 
 
@@ -419,7 +419,7 @@ class _$CreateStateCopyWithImpl<$Res>
 
 /// Create a copy of CreateState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? confectionery = freezed,Object? street = freezed,Object? city = freezed,Object? state = freezed,Object? neighborhood = freezed,Object? number = freezed,Object? status = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? confectionery = freezed,Object? street = freezed,Object? city = freezed,Object? state = freezed,Object? neighborhood = freezed,Object? number = freezed,Object? phone = freezed,Object? status = null,}) {
   return _then(_self.copyWith(
 confectionery: freezed == confectionery ? _self.confectionery : confectionery // ignore: cast_nullable_to_non_nullable
 as Confeitaria?,street: freezed == street ? _self.street : street // ignore: cast_nullable_to_non_nullable
@@ -427,6 +427,7 @@ as String?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to
 as String?,state: freezed == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as String?,neighborhood: freezed == neighborhood ? _self.neighborhood : neighborhood // ignore: cast_nullable_to_non_nullable
 as String?,number: freezed == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
+as String?,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as CreateStatus,
   ));
@@ -448,7 +449,7 @@ $CreateStatusCopyWith<$Res> get status {
 
 
 class _CreateState implements CreateState {
-  const _CreateState({this.confectionery, this.street, this.city, this.state, this.neighborhood, this.number, this.status = const CreateStatus.initial()});
+  const _CreateState({this.confectionery, this.street, this.city, this.state, this.neighborhood, this.number, this.phone, this.status = const CreateStatus.initial()});
   
 
 @override final  Confeitaria? confectionery;
@@ -457,6 +458,7 @@ class _CreateState implements CreateState {
 @override final  String? state;
 @override final  String? neighborhood;
 @override final  String? number;
+@override final  String? phone;
 @override@JsonKey() final  CreateStatus status;
 
 /// Create a copy of CreateState
@@ -469,16 +471,16 @@ _$CreateStateCopyWith<_CreateState> get copyWith => __$CreateStateCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateState&&(identical(other.confectionery, confectionery) || other.confectionery == confectionery)&&(identical(other.street, street) || other.street == street)&&(identical(other.city, city) || other.city == city)&&(identical(other.state, state) || other.state == state)&&(identical(other.neighborhood, neighborhood) || other.neighborhood == neighborhood)&&(identical(other.number, number) || other.number == number)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateState&&(identical(other.confectionery, confectionery) || other.confectionery == confectionery)&&(identical(other.street, street) || other.street == street)&&(identical(other.city, city) || other.city == city)&&(identical(other.state, state) || other.state == state)&&(identical(other.neighborhood, neighborhood) || other.neighborhood == neighborhood)&&(identical(other.number, number) || other.number == number)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,confectionery,street,city,state,neighborhood,number,status);
+int get hashCode => Object.hash(runtimeType,confectionery,street,city,state,neighborhood,number,phone,status);
 
 @override
 String toString() {
-  return 'CreateState(confectionery: $confectionery, street: $street, city: $city, state: $state, neighborhood: $neighborhood, number: $number, status: $status)';
+  return 'CreateState(confectionery: $confectionery, street: $street, city: $city, state: $state, neighborhood: $neighborhood, number: $number, phone: $phone, status: $status)';
 }
 
 
@@ -489,7 +491,7 @@ abstract mixin class _$CreateStateCopyWith<$Res> implements $CreateStateCopyWith
   factory _$CreateStateCopyWith(_CreateState value, $Res Function(_CreateState) _then) = __$CreateStateCopyWithImpl;
 @override @useResult
 $Res call({
- Confeitaria? confectionery, String? street, String? city, String? state, String? neighborhood, String? number, CreateStatus status
+ Confeitaria? confectionery, String? street, String? city, String? state, String? neighborhood, String? number, String? phone, CreateStatus status
 });
 
 
@@ -506,7 +508,7 @@ class __$CreateStateCopyWithImpl<$Res>
 
 /// Create a copy of CreateState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? confectionery = freezed,Object? street = freezed,Object? city = freezed,Object? state = freezed,Object? neighborhood = freezed,Object? number = freezed,Object? status = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? confectionery = freezed,Object? street = freezed,Object? city = freezed,Object? state = freezed,Object? neighborhood = freezed,Object? number = freezed,Object? phone = freezed,Object? status = null,}) {
   return _then(_CreateState(
 confectionery: freezed == confectionery ? _self.confectionery : confectionery // ignore: cast_nullable_to_non_nullable
 as Confeitaria?,street: freezed == street ? _self.street : street // ignore: cast_nullable_to_non_nullable
@@ -514,6 +516,7 @@ as String?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to
 as String?,state: freezed == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as String?,neighborhood: freezed == neighborhood ? _self.neighborhood : neighborhood // ignore: cast_nullable_to_non_nullable
 as String?,number: freezed == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
+as String?,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as CreateStatus,
   ));
