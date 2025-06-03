@@ -19,24 +19,16 @@ class CreateBloc extends Bloc<CreateEvent, CreateState> {
     on<_CepChanged>(_onCepChanged, transformer: droppable());
     on<_Submitted>(_onSubmitted, transformer: droppable());
     on<_Edit>(_onEdit, transformer: droppable());
-    on<_LoadConfectioneries>(_onLoadConfectioneries, transformer: droppable());
+    //on<_LoadConfectioneries>(_onLoadConfectioneries, transformer: droppable());
   }
 
   final AppDatabase _db;
 
   Future<void> _onStarted(_Started event, Emitter<CreateState> emit) async {
-    // emit(state.copyWith(status: const CreateStatus.loading()));
-    // final confeitarias = await _db.getAllConfeitarias();
-    // emit(state.copyWith(confeitarias: confeitarias, status: const CreateStatus.success()));
-  }
-
-  Future<void> _onLoadConfectioneries(
-    _LoadConfectioneries event,
-    Emitter<CreateState> emit,
-  ) async {
-    emit(state.copyWith(status: const CreateStatus.loading()));
+    if(event.confectionery !=null){
+      emit(state.copyWith(status: const CreateStatus.loading()));
     try {
-      final confectionery = await _db.getConfeitariaById(event.id);
+      final confectionery = await _db.getConfeitariaById(event.confectionery!.id);
       if (confectionery != null) {
         emit(state.copyWith(confectionery: confectionery, status: const CreateStatus.initial()));
       } else {
@@ -44,10 +36,28 @@ class CreateBloc extends Bloc<CreateEvent, CreateState> {
       }
     } catch (e) {
       emit(state.copyWith(status: CreateStatus.failure(message: e.toString())));
-    }finally{
-      print('Função de loadConfectioneries executada');
+    }
     }
   }
+
+  // Future<void> _onLoadConfectioneries(
+  //   _LoadConfectioneries event,
+  //   Emitter<CreateState> emit,
+  // ) async {
+  //   emit(state.copyWith(status: const CreateStatus.loading()));
+  //   try {
+  //     final confectionery = await _db.getConfeitariaById(event.id);
+  //     if (confectionery != null) {
+  //       emit(state.copyWith(confectionery: confectionery, status: const CreateStatus.initial()));
+  //     } else {
+  //       emit(state.copyWith(status: CreateStatus.failure(message: 'Confeitaria não encontrada')));
+  //     }
+  //   } catch (e) {
+  //     emit(state.copyWith(status: CreateStatus.failure(message: e.toString())));
+  //   }finally{
+  //     print('Função de loadConfectioneries executada');
+  //   }
+  // }
 
   Future<void> _onCepChanged(
     _CepChanged event,

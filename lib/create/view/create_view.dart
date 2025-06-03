@@ -1,3 +1,4 @@
+import 'package:app_desafio/database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -5,7 +6,8 @@ import '../../ui/_core/app_colors.dart';
 import '../bloc/create_bloc.dart';
 
 class CreateView extends StatefulWidget {
-  const CreateView({super.key});
+  final Confeitaria? confeitaria;
+  const CreateView({this.confeitaria, super.key});
 
   @override
   State<CreateView> createState() => _CreateViewState();
@@ -21,6 +23,21 @@ class _CreateViewState extends State<CreateView> {
   final _estadoController = TextEditingController();
   final _ruaController = TextEditingController();
   final _numeroController = TextEditingController();
+
+  @override
+  void initState() {
+    if(widget.confeitaria != null){
+          _nomeController.text = widget.confeitaria!.nome;
+          _telefoneController.text = widget.confeitaria!.telefone ?? '';
+          _cepController.text = widget.confeitaria!.cep;
+          _cidadeController.text = widget.confeitaria!.cidade;
+          _bairroController.text = widget.confeitaria!.bairro;
+          _estadoController.text = widget.confeitaria!.estado;
+          _ruaController.text = widget.confeitaria!.rua;
+          _numeroController.text = widget.confeitaria!.numero;
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -43,7 +60,7 @@ class _CreateViewState extends State<CreateView> {
           listenWhen:
               (prev, curr) =>
                   prev.status is! CreateStatusLoading &&
-                  curr.status is CreateStatusLoading,
+                  curr.status is CreateStatusLoading && curr.confectionery == null,
           listener: (context, state) {
             showDialog(
               context: context,
@@ -55,6 +72,50 @@ class _CreateViewState extends State<CreateView> {
                         CircularProgressIndicator(),
                         SizedBox(width: 16),
                         Text('Buscando cep...'),
+                      ],
+                    ),
+                  ),
+            );
+          },
+        ),
+        BlocListener<CreateBloc, CreateState>(
+          listenWhen:
+              (prev, curr) =>
+                  prev.status is! CreateStatusLoading &&
+                  curr.status is CreateStatusLoading && curr.confectionery != null && (prev.city != curr.city || prev.neighborhood != curr.neighborhood || prev.state != curr.state || prev.street != curr.street),
+          listener: (context, state) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder:
+                  (context) => AlertDialog(
+                    content: Row(
+                      children: const [
+                        CircularProgressIndicator(),
+                        SizedBox(width: 16),
+                        Text('Buscando cep...'),
+                      ],
+                    ),
+                  ),
+            );
+          },
+        ),
+        BlocListener<CreateBloc, CreateState>(
+          listenWhen:
+              (prev, curr) =>
+                  prev.status is! CreateStatusLoading &&
+                  curr.status is CreateStatusLoading && curr.confectionery != null,
+          listener: (context, state) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder:
+                  (context) => AlertDialog(
+                    content: Row(
+                      children: const [
+                        CircularProgressIndicator(),
+                        SizedBox(width: 16),
+                        Text('Atualizando Confeitaria...'),
                       ],
                     ),
                   ),
@@ -111,252 +172,247 @@ class _CreateViewState extends State<CreateView> {
           },
         ),
       ],
-      child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
-        appBar: AppBar(
-          title: Text(
-            'Cadastro de Confeitaria',
-            style: TextStyle(
-              fontFamily: 'LobsterTwo',
+      child: BlocBuilder<CreateBloc, CreateState>(
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: AppColors.backgroundColor,
+            appBar: AppBar(
+              title: Text( state.confectionery == null?
+                'Cadastro de Confeitaria': 'Edição de Confeitaria',
+                style: TextStyle(
+                  fontFamily: 'LobsterTwo',
 
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-
-          centerTitle: true,
-        ),
-        body: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    spacing: 8,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Nome da Confeitaria
-                      TextFormField(
-                        controller: _nomeController,
-                        decoration: InputDecoration(
-                          labelText: 'Nome da Confeitaria',
-                          border: OutlineInputBorder(),
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Campo obrigatório';
-                          }
-                          return null;
-                        },
-                      ),
-                      // Telefone
-                      TextFormField(
-                        controller: _telefoneController,
-                        keyboardType: TextInputType.phone,
-                        maxLength: 13,
-                        decoration: InputDecoration(
-                          labelText: 'Telefone',
-                          border: OutlineInputBorder(),
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Campo obrigatório';
-                          }
-                          if (!RegExp(
-                            r'^\(?\d{2}\)?[\s-]?\d{4,5}-?\d{4}$',
-                          ).hasMatch(value)) {
-                            return 'Telefone inválido';
-                          }
-                          return null;
-                        },
-                      ),
-                      Row(
-                        spacing: 8,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: TextFormField(
-                              controller: _cepController,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                labelText: 'CEP',
-                                border: OutlineInputBorder(),
-                                fillColor: Colors.white,
-                                filled: true,
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Campo obrigatório';
-                                } else if (!RegExp(
-                                  r'^\d{8}$',
-                                ).hasMatch(value)) {
-                                  return 'CEP inválido';
-                                }
-                                return null;
-                              },
-                              onChanged: (value) async {
-                                if (value.length == 8) {
-                                  context.read<CreateBloc>().add(
-                                    CreateEvent.cepChanged(value),
-                                  );
-                                  // showDialog(
-                                  //   context: context,
-                                  //   barrierDismissible: false,
-                                  //   builder:
-                                  //       (context) => AlertDialog(
-                                  //         content: Row(
-                                  //           children: const [
-                                  //             CircularProgressIndicator(),
-                                  //             SizedBox(width: 16),
-                                  //             Text('Buscando cep...'),
-                                  //           ],
-                                  //         ),
-                                  //       ),
-                                  // );
-                                  // // await buscarEndereco(value);
-                                  // if (context.mounted) {
-                                  //   Navigator.of(context).pop();
-                                  // }
-                                }
-                              },
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: // Número
-                                TextFormField(
-                              controller: _numeroController,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                labelText: 'Número',
-                                border: OutlineInputBorder(),
-                                fillColor: Colors.white,
-                                filled: true,
-                              ),
-                              validator:
-                                  (value) =>
-                                      value == null || value.isEmpty
-                                          ? 'Campo obrigatório'
-                                          : null,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        spacing: 8,
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: // Rua
-                                TextFormField(
-                              controller: _ruaController,
-                              decoration: InputDecoration(
-                                labelText: 'Rua',
-                                border: OutlineInputBorder(),
-                                fillColor: Colors.white,
-                                filled: true,
-                              ),
-                              readOnly: true,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: // Bairro
-                                TextFormField(
-                              controller: _bairroController,
-                              decoration: InputDecoration(
-                                labelText: 'Bairro',
-                                border: OutlineInputBorder(),
-                                fillColor: Colors.white,
-                                filled: true,
-                              ),
-                              readOnly: true,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        spacing: 8,
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: // Cidade
-                                TextFormField(
-                              controller: _cidadeController,
-                              decoration: InputDecoration(
-                                labelText: 'Cidade',
-                                border: OutlineInputBorder(),
-                                fillColor: Colors.white,
-                                filled: true,
-                              ),
-                              readOnly: true,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: // Estado
-                                TextFormField(
-                              controller: _estadoController,
-                              decoration: InputDecoration(
-                                labelText: 'Estado',
-                                border: OutlineInputBorder(),
-                                fillColor: Colors.white,
-                                filled: true,
-                              ),
-                              readOnly: true,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  fontWeight: FontWeight.bold,
                 ),
               ),
+
+              centerTitle: true,
             ),
-            // o botão cadastrar ou salvar que vai definir qual função chamar: salvarAlterações ou enviarDados. se baseando em confeitaria!=null?
-            SliverFillRemaining(
-              child: Container(
-                alignment: Alignment.bottomCenter,
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: SafeArea(
-                  minimum: EdgeInsets.only(bottom: 16),
-                  child: FilledButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        print('Telefone na tela de cadastro: ${_telefoneController.text}');
-                        context.read<CreateBloc>().add(
-                          CreateEvent.submitted(
-                            name: _nomeController.text,
-                            phone: _telefoneController.text,
-                            cep: _cepController.text,
-                            street: _ruaController.text,
-                            city: _cidadeController.text,
-                            state: _estadoController.text,
-                            neighborhood: _bairroController.text,
-                            number: _numeroController.text,
+            body: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        spacing: 8,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Nome da Confeitaria
+                          TextFormField(
+                            controller: _nomeController,
+                            decoration: InputDecoration(
+                              labelText: 'Nome da Confeitaria',
+                              border: OutlineInputBorder(),
+                              fillColor: Colors.white,
+                              filled: true,
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Campo obrigatório';
+                              }
+                              return null;
+                            },
                           ),
-                        );
-                      }
-                    },
-                    style: FilledButton.styleFrom(
-                      backgroundColor: AppColors.secondColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                          // Telefone
+                          TextFormField(
+                            controller: _telefoneController,
+                            keyboardType: TextInputType.phone,
+                            maxLength: 13,
+                            decoration: InputDecoration(
+                              labelText: 'Telefone',
+                              border: OutlineInputBorder(),
+                              fillColor: Colors.white,
+                              filled: true,
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Campo obrigatório';
+                              }
+                              if (!RegExp(
+                                r'^\(?\d{2}\)?[\s-]?\d{4,5}-?\d{4}$',
+                              ).hasMatch(value)) {
+                                return 'Telefone inválido';
+                              }
+                              return null;
+                            },
+                          ),
+                          Row(
+                            spacing: 8,
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: TextFormField(
+                                  controller: _cepController,
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    labelText: 'CEP',
+                                    border: OutlineInputBorder(),
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Campo obrigatório';
+                                    } else if (!RegExp(
+                                      r'^\d{8}$',
+                                    ).hasMatch(value)) {
+                                      return 'CEP inválido';
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) async {
+                                    if (value.length == 8) {
+                                      context.read<CreateBloc>().add(
+                                        CreateEvent.cepChanged(value),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: // Número
+                                    TextFormField(
+                                  controller: _numeroController,
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    labelText: 'Número',
+                                    border: OutlineInputBorder(),
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                  ),
+                                  validator:
+                                      (value) =>
+                                          value == null || value.isEmpty
+                                              ? 'Campo obrigatório'
+                                              : null,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            spacing: 8,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: // Rua
+                                    TextFormField(
+                                  controller: _ruaController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Rua',
+                                    border: OutlineInputBorder(),
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                  ),
+                                  readOnly: true,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: // Bairro
+                                    TextFormField(
+                                  controller: _bairroController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Bairro',
+                                    border: OutlineInputBorder(),
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                  ),
+                                  readOnly: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            spacing: 8,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: // Cidade
+                                    TextFormField(
+                                  controller: _cidadeController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Cidade',
+                                    border: OutlineInputBorder(),
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                  ),
+                                  readOnly: true,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: // Estado
+                                    TextFormField(
+                                  controller: _estadoController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Estado',
+                                    border: OutlineInputBorder(),
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                  ),
+                                  readOnly: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      minimumSize: Size.fromHeight(43),
                     ),
-                    child: Text('Salvar'),
                   ),
                 ),
-              ),
+                // o botão cadastrar ou salvar que vai definir qual função chamar: salvarAlterações ou enviarDados. se baseando em confeitaria!=null?
+                SliverFillRemaining(
+                  child: Container(
+                    alignment: Alignment.bottomCenter,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: SafeArea(
+                      minimum: EdgeInsets.only(bottom: 16),
+                      child: FilledButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            widget.confeitaria ==null?
+                            context.read<CreateBloc>().add(
+                              CreateEvent.submitted(
+                                name: _nomeController.text,
+                                phone: _telefoneController.text,
+                                cep: _cepController.text,
+                                street: _ruaController.text,
+                                city: _cidadeController.text,
+                                state: _estadoController.text,
+                                neighborhood: _bairroController.text,
+                                number: _numeroController.text,
+                              ),
+                            ):context.read<CreateBloc>().add(CreateEvent.edit(
+                              id: widget.confeitaria!.id, 
+                              name: _nomeController.text, 
+                              phone: _telefoneController.text, 
+                              cep: _cepController.text, 
+                              street: _ruaController.text, 
+                              city: _cidadeController.text, 
+                              state: _estadoController.text, 
+                              neighborhood: _bairroController.text, 
+                              number: _numeroController.text));
+                          }
+                        },
+                        style: FilledButton.styleFrom(
+                          backgroundColor: AppColors.secondColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          minimumSize: Size.fromHeight(43),
+                        ),
+                        child: Text('Salvar'),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

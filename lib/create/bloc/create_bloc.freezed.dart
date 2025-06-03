@@ -46,33 +46,67 @@ $CreateEventCopyWith(CreateEvent _, $Res Function(CreateEvent) __);
 
 
 class _Started implements CreateEvent {
-  const _Started();
+  const _Started(this.confectionery);
   
 
+ final  Confeitaria? confectionery;
 
-
+/// Create a copy of CreateEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$StartedCopyWith<_Started> get copyWith => __$StartedCopyWithImpl<_Started>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Started);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Started&&(identical(other.confectionery, confectionery) || other.confectionery == confectionery));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,confectionery);
 
 @override
 String toString() {
-  return 'CreateEvent.started()';
+  return 'CreateEvent.started(confectionery: $confectionery)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class _$StartedCopyWith<$Res> implements $CreateEventCopyWith<$Res> {
+  factory _$StartedCopyWith(_Started value, $Res Function(_Started) _then) = __$StartedCopyWithImpl;
+@useResult
+$Res call({
+ Confeitaria? confectionery
+});
 
 
+
+
+}
+/// @nodoc
+class __$StartedCopyWithImpl<$Res>
+    implements _$StartedCopyWith<$Res> {
+  __$StartedCopyWithImpl(this._self, this._then);
+
+  final _Started _self;
+  final $Res Function(_Started) _then;
+
+/// Create a copy of CreateEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? confectionery = freezed,}) {
+  return _then(_Started(
+freezed == confectionery ? _self.confectionery : confectionery // ignore: cast_nullable_to_non_nullable
+as Confeitaria?,
+  ));
+}
+
+
+}
 
 /// @nodoc
 
@@ -214,72 +248,6 @@ as String,state: null == state ? _self.state : state // ignore: cast_nullable_to
 as String,neighborhood: null == neighborhood ? _self.neighborhood : neighborhood // ignore: cast_nullable_to_non_nullable
 as String,number: null == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
 as String,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
-class _LoadConfectioneries implements CreateEvent {
-  const _LoadConfectioneries(this.id);
-  
-
- final  int id;
-
-/// Create a copy of CreateEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$LoadConfectioneriesCopyWith<_LoadConfectioneries> get copyWith => __$LoadConfectioneriesCopyWithImpl<_LoadConfectioneries>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoadConfectioneries&&(identical(other.id, id) || other.id == id));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,id);
-
-@override
-String toString() {
-  return 'CreateEvent.loadConfectioneries(id: $id)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$LoadConfectioneriesCopyWith<$Res> implements $CreateEventCopyWith<$Res> {
-  factory _$LoadConfectioneriesCopyWith(_LoadConfectioneries value, $Res Function(_LoadConfectioneries) _then) = __$LoadConfectioneriesCopyWithImpl;
-@useResult
-$Res call({
- int id
-});
-
-
-
-
-}
-/// @nodoc
-class __$LoadConfectioneriesCopyWithImpl<$Res>
-    implements _$LoadConfectioneriesCopyWith<$Res> {
-  __$LoadConfectioneriesCopyWithImpl(this._self, this._then);
-
-  final _LoadConfectioneries _self;
-  final $Res Function(_LoadConfectioneries) _then;
-
-/// Create a copy of CreateEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
-  return _then(_LoadConfectioneries(
-null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,
   ));
 }
 

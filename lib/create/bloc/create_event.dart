@@ -2,7 +2,7 @@ part of 'create_bloc.dart';
 
 @freezed
 class CreateEvent with _$CreateEvent {
-  const factory CreateEvent.started() = _Started;
+  const factory CreateEvent.started(Confeitaria? confectionery) = _Started;
 
   const factory CreateEvent.cepChanged(String cep) = _CepChanged;
 
@@ -17,7 +17,7 @@ class CreateEvent with _$CreateEvent {
     required String number,
   }) = _Submitted;
 
-  const factory CreateEvent.loadConfectioneries(int id) = _LoadConfectioneries;
+ // const factory CreateEvent.loadConfectioneries(int id) = _LoadConfectioneries;
 
   const factory CreateEvent.edit({
     required int id,
