@@ -6,7 +6,8 @@ import '../bloc/create_bloc.dart';
 import 'view.dart';
 
 class CreatePage extends StatelessWidget {
-  const CreatePage({super.key});
+  final Confeitaria? confeitaria;
+  const CreatePage({this.confeitaria,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +15,8 @@ class CreatePage extends StatelessWidget {
       create:
           (context) =>
               CreateBloc(context.read<AppDatabase>())
-                ..add(const CreateEvent.started()),
-      child: const CreateView(),
+                ..add(CreateEvent.started(confeitaria)),
+      child:CreateView(confeitaria:confeitaria),
     );
   }
 }
