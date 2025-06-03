@@ -22,6 +22,7 @@ Permite o cadastro, edição e visualização de confeitarias e seus produtos, a
 - **Geocoding** (conversão de endereço em coordenadas)
 - **Flutter Maps** (exibição de mapa)
 - **Image Picker** (para seleção de imagens)
+- **BLoC** (separar a UI das regras de negócio)
 
 ---
 
